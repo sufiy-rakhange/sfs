@@ -1,0 +1,164 @@
+{% extends "feedback/student/base.html" %}
+{% block title %}
+Index
+{% endblock %}
+{% block studentCenter %}
+    <label class="abs">Welcome {{ student.user.first_name }} {{ student.user.last_name}}</label>
+{% endblock %}
+{% block body %}
+<h3 class="text-center mb-3 mt-5" id="popup">
+    <kbd>Theoretical Subjects</kbd>
+</h3>
+{% for subject in subjects %}
+    <div class="row mb-4">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+            <div class="card slide">
+                <div class="card-body">
+                    {% for c in complete %}
+                    <!-- Condition to break for when required -->
+                    {% if forloop.counter == forloop.parentloop.counter %}
+                    <!-- When feedback is remaining -->
+                    {% if c == 0 %}
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="row">
+                                <div class="col-lg-12 mt-2">
+                                    Prof. {{ subject.teacher.user.first_name }} {{ subject.teacher.user.last_name }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 mt-2">
+                                    Subject: {{ subject.subject_name }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 mt-2">
+                                    Action: 
+                                    <a href="/student/feedback/{{ subject.teacher.id }}/{{ subject.id }}" type="button" class="btn btn-danger text-center">
+                                        Give Feedback <i class="fas fa-comment"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mt-2 center">
+                            <label class="pr-3">Status:</label><span><i class="fas fa-times-circle"></i></span>
+                        </div>
+                    </div>
+                        <!-- When feedback is completed -->
+                        {% else %}
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="row">
+                                    <div class="col-lg-12 mt-2">
+                                        Prof. {{ subject.teacher.user.first_name }} {{ subject.teacher.user.last_name }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12 mt-2">
+                                        Subject: {{ subject.subject_name }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12 mt-2">
+                                        Action: 
+                                        <b style="color: #006600;">
+                                            Completed <i class="far fa-thumbs-up"></i>
+                                        </b>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mt-2 center">
+                            <label class="pr-3">Status:</label>
+                            <span>
+                                <i class="fas fa-check-circle"></i>
+                                </span>
+                            </div>
+                        </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+<h3 class="text-center mb-3 mt-5" id="popup">
+    <kbd>Practical Subjects</kbd>
+</h3>
+{% for practical in practicals %}
+    <div class="row mb-4">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+            <div class="card slide">
+                <div class="card-body">
+                    {% for c1 in complete1 %}
+                    <!-- Condition to break for when required -->
+                    {% if forloop.counter == forloop.parentloop.counter %}
+                    <!-- When feedback is remaining -->
+                    {% if c1 == 0 %}
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="row">
+                                <div class="col-lg-12 mt-2">
+                                    Prof. {{ practical.teacher.user.first_name }} {{ practical.teacher.user.last_name }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 mt-2">
+                                    Subject: {{ practical.subject.subject_name }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 mt-2">
+                                    Action: 
+                                    <a href="/student/feedback/{{ practical.teacher.id }}/{{ practical.subject.id }}" type="button" class="btn btn-danger text-center">
+                                        Give Feedback <i class="fas fa-comment"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mt-2 center">
+                            <label class="pr-3">Status:</label><span><i class="fas fa-times-circle"></i></span>
+                        </div>
+                    </div>
+                        <!-- When feedback is completed -->
+                        {% else %}
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="row">
+                                    <div class="col-lg-12 mt-2">
+                                        Prof. {{ practical.teacher.user.first_name }} {{ practical.teacher.user.last_name }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12 mt-2">
+                                        Subject: {{ practical.subject.subject_name }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12 mt-2">
+                                        Action:
+                                        <b style="color: #006600;">
+                                            Completed <i class="far fa-thumbs-up"></i>
+                                        </b>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mt-2 center">
+                                <label class="pr-3">Status:</label>
+                                <span>
+                                    <i class="fas fa-check-circle"></i>
+                                </span>
+                            </div>
+                        </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+{% endblock %}

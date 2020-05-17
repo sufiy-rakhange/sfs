@@ -1,0 +1,1057 @@
+{% extends "feedback/teacher/base_teacher.html" %}
+
+{% block title %}Index{% endblock %}
+
+{% block teacherCenter %}
+    <label class="abs">Prof. {{ teacher.user.first_name }} {{ teacher.user.last_name}}</label>
+{% endblock %}
+
+{% block container %}
+<div class="col-lg-2 pt-4 pr-0 menu dashboard-panel">
+    <ul class="nav nav-pills flex-column">
+        <li class="nav-item">
+            <a class="nav-link br-0 active" data-toggle="pill" href="#regularStudents">
+                Regular Students
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link br-0" data-toggle="pill" href="#defaulter">
+                Defaulter Students
+            </a>
+        </li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block nav %}
+    {% if teacher.hod %}
+        <a href="{% url 'all_suggestions' %}" class="nav-link navigator" title="Overall Sugggestions">
+            All Suggestions <i class="fas fa-book-open"></i>
+        </a>
+    {% endif %}
+    {% if teacher.coordinator %}
+        <a href="{% url 'add_subject' %}" class="nav-link navigator" title="Add Subject">
+            Add Subject <i class="far fa-address-book"></i>
+        </a>
+    {% endif %}
+{% endblock %}
+
+<!-- Change Password -->
+{% block pass %}
+        <a href="{% url 'password_change' %}" class="dropdown-item" title="Change password">
+            Change Password <span><i class="fas fa-key"></i></span>
+        </a>
+        <div class="dropdown-divider"></div>
+{% endblock %}
+
+{% block body %}
+    {% if i == 0 %}
+    <!-- When there is no feedback -->
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8 top150">
+        <div class="card error slide">
+            <h1 class="text-center">
+                <i class="fas fa-quote-left"></i> No Feedbacks Yet <i class="fas fa-quote-right"></i>
+            </h1>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-lg-12 p-0">
+        <div class="tab-content">
+            <!-- Regular -->
+            <div id="regularStudents" class="tab-pane container active p-0">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ul class="nav nav-pills nav-justified">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="pill" href="#teacher_table">
+                                    Tabular Result
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="pill" href="#piechart">
+                                    Pie-Chart Result
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="pill" href="#linechart">
+                                    Line-Chart Result
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-12 p-0">
+                    <div class="tab-content">
+                        <!-- Table Result -->
+                        <div id="teacher_table" class="tab-pane container active p-0">
+                            {% for feedback, values in feedbacks.items %}
+                            <h3 class="text-center mt-5 mb-3">
+                                {{ feedback }}
+                            </h3>
+                                {% if values.count1 == 1 %}
+                                    <p>{{ values.count1 }} student has given feedback</p>
+                                {% else %}
+                                    <p>{{ values.count1 }} students have given feedback</p>
+                                {% endif %}
+                            <!-- Tabular Result -->
+                            {% if not values.status %}
+                                <!-- Theoretical Questions -->
+                                <table class="table table-striped table-bordered" width=100%>
+                                    <thead class="table table-primary">
+                                        <tr>
+                                            <th>Sr. No.</th>
+                                            <th class="text-center">Questions</th>
+                                            <th>Excellent</th>
+                                            <th class="text-center">Very Good</th>
+                                            <th>Good</th>
+                                            <th>Average</th>
+                                            <th>Poor</th>
+                                            <th class="text-center">Not Satisfactory</th>
+                                            <th>Total Marks</th>
+                                            <th>Out Of</th>
+                                            <th>Percentage</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>How much teaching is relevant to syllabus by the teacher?</td>
+                                            <td class="text-center">{{ values.q1E }} </td>
+                                            <td class="text-center">{{ values.q1V }}</td>
+                                            <td class="text-center">{{ values.q1G }}</td>
+                                            <td class="text-center">{{ values.q1A }}</td>
+                                            <td class="text-center">{{ values.q1P }}</td>
+                                            <td class="text-center">{{ values.q1N }}</td>
+                                            <td class="text-center">{{ values.q1T }}</td>
+                                            <td class="text-center">{{ values.q1O }}</td>
+                                            <td class="text-center">{{ values.q1Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>How much teacher creates the subject interesting?</td>
+                                            <td class="text-center">{{ values.q2E }} </td>
+                                            <td class="text-center">{{ values.q2V }}</td>
+                                            <td class="text-center">{{ values.q2G }}</td>
+                                            <td class="text-center">{{ values.q2A }}</td>
+                                            <td class="text-center">{{ values.q2P }}</td>
+                                            <td class="text-center">{{ values.q2N }}</td>
+                                            <td class="text-center">{{ values.q2T }}</td>
+                                            <td class="text-center">{{ values.q2O }}</td>
+                                            <td class="text-center">{{ values.q2Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td>How regular teacher reports at right time to class?</td>
+                                            <td class="text-center">{{ values.q3E }} </td>
+                                            <td class="text-center">{{ values.q3V }}</td>
+                                            <td class="text-center">{{ values.q3G }}</td>
+                                            <td class="text-center">{{ values.q3A }}</td>
+                                            <td class="text-center">{{ values.q3P }}</td>
+                                            <td class="text-center">{{ values.q3N }}</td>
+                                            <td class="text-center">{{ values.q3T }}</td>
+                                            <td class="text-center">{{ values.q3O }}</td>
+                                            <td class="text-center">{{ values.q3Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>4</td>
+                                            <td>How efficiently lecture time is utilized by the teacher?</td>
+                                            <td class="text-center">{{ values.q4E }} </td>
+                                            <td class="text-center">{{ values.q4V }}</td>
+                                            <td class="text-center">{{ values.q4G }}</td>
+                                            <td class="text-center">{{ values.q4A }}</td>
+                                            <td class="text-center">{{ values.q4P }}</td>
+                                            <td class="text-center">{{ values.q4N }}</td>
+                                            <td class="text-center">{{ values.q4T }}</td>
+                                            <td class="text-center">{{ values.q4O }}</td>
+                                            <td class="text-center">{{ values.q4Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>5</td>
+                                            <td>How efficiently board writing is readable to last benches?</td>
+                                            <td class="text-center">{{ values.q5E }} </td>
+                                            <td class="text-center">{{ values.q5V }}</td>
+                                            <td class="text-center">{{ values.q5G }}</td>
+                                            <td class="text-center">{{ values.q5A }}</td>
+                                            <td class="text-center">{{ values.q5P }}</td>
+                                            <td class="text-center">{{ values.q5N }}</td>
+                                            <td class="text-center">{{ values.q5T }}</td>
+                                            <td class="text-center">{{ values.q5O }}</td>
+                                            <td class="text-center">{{ values.q5Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>6</td>
+                                            <td>How much efficiently voice of a teacher is clear and understandable?</td>
+                                            <td class="text-center">{{ values.q6E }} </td>
+                                            <td class="text-center">{{ values.q6V }}</td>
+                                            <td class="text-center">{{ values.q6G }}</td>
+                                            <td class="text-center">{{ values.q6A }}</td>
+                                            <td class="text-center">{{ values.q6P }}</td>
+                                            <td class="text-center">{{ values.q6N }}</td>
+                                            <td class="text-center">{{ values.q6T }}</td>
+                                            <td class="text-center">{{ values.q6O }}</td>
+                                            <td class="text-center">{{ values.q6Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>7</td>
+                                            <td>How efficiently practical real life examples are given to the students?</td>
+                                            <td class="text-center">{{ values.q7E }} </td>
+                                            <td class="text-center">{{ values.q7V }}</td>
+                                            <td class="text-center">{{ values.q7G }}</td>
+                                            <td class="text-center">{{ values.q7A }}</td>
+                                            <td class="text-center">{{ values.q7P }}</td>
+                                            <td class="text-center">{{ values.q7N }}</td>
+                                            <td class="text-center">{{ values.q7T }}</td>
+                                            <td class="text-center">{{ values.q7O }}</td>
+                                            <td class="text-center">{{ values.q7Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>8</td>
+                                            <td>How efficient review is made on previous class by the teacher?</td>
+                                            <td class="text-center">{{ values.q8E }} </td>
+                                            <td class="text-center">{{ values.q8V }}</td>
+                                            <td class="text-center">{{ values.q8G }}</td>
+                                            <td class="text-center">{{ values.q8A }}</td>
+                                            <td class="text-center">{{ values.q8P }}</td>
+                                            <td class="text-center">{{ values.q8N }}</td>
+                                            <td class="text-center">{{ values.q8T }}</td>
+                                            <td class="text-center">{{ values.q8O }}</td>
+                                            <td class="text-center">{{ values.q8Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>9</td>
+                                            <td>How efficiently notes are provided by teacher?</td>
+                                            <td class="text-center">{{ values.q9E }} </td>
+                                            <td class="text-center">{{ values.q9V }}</td>
+                                            <td class="text-center">{{ values.q9G }}</td>
+                                            <td class="text-center">{{ values.q9A }}</td>
+                                            <td class="text-center">{{ values.q9P }}</td>
+                                            <td class="text-center">{{ values.q9N }}</td>
+                                            <td class="text-center">{{ values.q9T }}</td>
+                                            <td class="text-center">{{ values.q9O }}</td>
+                                            <td class="text-center">{{ values.q9Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>10</td>
+                                            <td>How efficiently teacher is available for clearing doubts of students?</td>
+                                            <td class="text-center">{{ values.q10E }} </td>
+                                            <td class="text-center">{{ values.q10V }}</td>
+                                            <td class="text-center">{{ values.q10G }}</td>
+                                            <td class="text-center">{{ values.q10A }}</td>
+                                            <td class="text-center">{{ values.q10P }}</td>
+                                            <td class="text-center">{{ values.q10N }}</td>
+                                            <td class="text-center">{{ values.q10T }}</td>
+                                            <td class="text-center">{{ values.q10O }}</td>
+                                            <td class="text-center">{{ values.q10Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>11</td>
+                                            <td>How efficient students doubts address Satisfactorily?</td>
+                                            <td class="text-center">{{ values.q11E }} </td>
+                                            <td class="text-center">{{ values.q11V }}</td>
+                                            <td class="text-center">{{ values.q11G }}</td>
+                                            <td class="text-center">{{ values.q11A }}</td>
+                                            <td class="text-center">{{ values.q11P }}</td>
+                                            <td class="text-center">{{ values.q11N }}</td>
+                                            <td class="text-center">{{ values.q11T }}</td>
+                                            <td class="text-center">{{ values.q11O }}</td>
+                                            <td class="text-center">{{ values.q11Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>12</td>
+                                            <td>What is the overall impression of teacher from your perspective?</td>
+                                            <td class="text-center">{{ values.q12E }} </td>
+                                            <td class="text-center">{{ values.q12V }}</td>
+                                            <td class="text-center">{{ values.q12G }}</td>
+                                            <td class="text-center">{{ values.q12A }}</td>
+                                            <td class="text-center">{{ values.q12P }}</td>
+                                            <td class="text-center">{{ values.q12N }}</td>
+                                            <td class="text-center">{{ values.q12T }}</td>
+                                            <td class="text-center">{{ values.q12O }}</td>
+                                            <td class="text-center">{{ values.q12Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>13</td>
+                                            <td class="text-center">Overall Total</td>
+                                            <td class="text-center">{{ values.subE }}</td>
+                                            <td class="text-center">{{ values.subV }}</td>
+                                            <td class="text-center">{{ values.subG }}</td>
+                                            <td class="text-center">{{ values.subA }}</td>
+                                            <td class="text-center">{{ values.subP }}</td>
+                                            <td class="text-center">{{ values.subN }}</td>
+                                            <td class="text-center">{{ values.subT }}</td>
+                                            <td class="text-center">{{ values.subO }}</td>
+                                            <td class="text-center">{{ values.subPerc }}%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            {% else %}
+                                <!-- Practical Questions -->
+                                <table class="table table-striped table-bordered" width=100%>
+                                    <thead class="table table-primary">
+                                        <tr>
+                                            <th>Sr. No.</th>
+                                            <th class="text-center">Questions</th>
+                                            <th>Excellent</th>
+                                            <th class="text-center">Very Good</th>
+                                            <th>Good</th>
+                                            <th>Average</th>
+                                            <th>Poor</th>
+                                            <th class="text-center">Not Satisfactory</th>
+                                            <th>Total Marks</th>
+                                            <th>Out Of</th>
+                                            <th>Percentage</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>How much you are satisfied by connections between practical work in practical classes really happen?</td>
+                                            <td class="text-center">{{ values.q1E }} </td>
+                                            <td class="text-center">{{ values.q1V }}</td>
+                                            <td class="text-center">{{ values.q1G }}</td>
+                                            <td class="text-center">{{ values.q1A }}</td>
+                                            <td class="text-center">{{ values.q1P }}</td>
+                                            <td class="text-center">{{ values.q1N }}</td>
+                                            <td class="text-center">{{ values.q1T }}</td>
+                                            <td class="text-center">{{ values.q1O }}</td>
+                                            <td class="text-center">{{ values.q1Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>How approachable is the teacher in practical classes?</td>
+                                            <td class="text-center">{{ values.q2E }} </td>
+                                            <td class="text-center">{{ values.q2V }}</td>
+                                            <td class="text-center">{{ values.q2G }}</td>
+                                            <td class="text-center">{{ values.q2A }}</td>
+                                            <td class="text-center">{{ values.q2P }}</td>
+                                            <td class="text-center">{{ values.q2N }}</td>
+                                            <td class="text-center">{{ values.q2T }}</td>
+                                            <td class="text-center">{{ values.q2O }}</td>
+                                            <td class="text-center">{{ values.q2Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td>How successful is the teacher in responding the questions and queries promptly and effectively?</td>
+                                            <td class="text-center">{{ values.q3E }} </td>
+                                            <td class="text-center">{{ values.q3V }}</td>
+                                            <td class="text-center">{{ values.q3G }}</td>
+                                            <td class="text-center">{{ values.q3A }}</td>
+                                            <td class="text-center">{{ values.q3P }}</td>
+                                            <td class="text-center">{{ values.q3N }}</td>
+                                            <td class="text-center">{{ values.q3T }}</td>
+                                            <td class="text-center">{{ values.q3O }}</td>
+                                            <td class="text-center">{{ values.q3Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>4</td>
+                                            <td>How effective is the teacher in evaluating the practical work?</td>
+                                            <td class="text-center">{{ values.q4E }} </td>
+                                            <td class="text-center">{{ values.q4V }}</td>
+                                            <td class="text-center">{{ values.q4G }}</td>
+                                            <td class="text-center">{{ values.q4A }}</td>
+                                            <td class="text-center">{{ values.q4P }}</td>
+                                            <td class="text-center">{{ values.q4N }}</td>
+                                            <td class="text-center">{{ values.q4T }}</td>
+                                            <td class="text-center">{{ values.q4O }}</td>
+                                            <td class="text-center">{{ values.q4Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>5</td>
+                                            <td>How much practicals runs smoothly according to university syllabus?</td>
+                                            <td class="text-center">{{ values.q5E }} </td>
+                                            <td class="text-center">{{ values.q5V }}</td>
+                                            <td class="text-center">{{ values.q5G }}</td>
+                                            <td class="text-center">{{ values.q5A }}</td>
+                                            <td class="text-center">{{ values.q5P }}</td>
+                                            <td class="text-center">{{ values.q5N }}</td>
+                                            <td class="text-center">{{ values.q5T }}</td>
+                                            <td class="text-center">{{ values.q5O }}</td>
+                                            <td class="text-center">{{ values.q5Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>6</td>
+                                            <td>How well does the teacher succeeds in stimulating and sustaining student's interest in practical work?</td>
+                                            <td class="text-center">{{ values.q6E }} </td>
+                                            <td class="text-center">{{ values.q6V }}</td>
+                                            <td class="text-center">{{ values.q6G }}</td>
+                                            <td class="text-center">{{ values.q6A }}</td>
+                                            <td class="text-center">{{ values.q6P }}</td>
+                                            <td class="text-center">{{ values.q6N }}</td>
+                                            <td class="text-center">{{ values.q6T }}</td>
+                                            <td class="text-center">{{ values.q6O }}</td>
+                                            <td class="text-center">{{ values.q6Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>7</td>
+                                            <td>Overall, how you are satisfied with the conduct of practicals?</td>
+                                            <td class="text-center">{{ values.q7E }} </td>
+                                            <td class="text-center">{{ values.q7V }}</td>
+                                            <td class="text-center">{{ values.q7G }}</td>
+                                            <td class="text-center">{{ values.q7A }}</td>
+                                            <td class="text-center">{{ values.q7P }}</td>
+                                            <td class="text-center">{{ values.q7N }}</td>
+                                            <td class="text-center">{{ values.q7T }}</td>
+                                            <td class="text-center">{{ values.q7O }}</td>
+                                            <td class="text-center">{{ values.q7Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>8</td>
+                                            <td class="text-center">Overall Total</td>
+                                            <td class="text-center">{{ values.subE }}</td>
+                                            <td class="text-center">{{ values.subV }}</td>
+                                            <td class="text-center">{{ values.subG }}</td>
+                                            <td class="text-center">{{ values.subA }}</td>
+                                            <td class="text-center">{{ values.subP }}</td>
+                                            <td class="text-center">{{ values.subN }}</td>
+                                            <td class="text-center">{{ values.subT }}</td>
+                                            <td class="text-center">{{ values.subO }}</td>
+                                            <td class="text-center">{{ values.subPerc }}%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            {% endif %}
+                            <div class="row mt-4 mb-3">
+                                <div class="col-lg-2">
+                                    <a href="/teacher/regular/suggestions/{{ values.id }}" class="btn btn-block btn-primary">
+                                        Suggestions <i class="fas fa-sticky-note"></i>
+                                    </a>
+                                </div>  
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Pie Chart Result -->
+                        <div id="piechart" class="tab-pane container mt-4">
+                            <div class="row">
+                                {% for feedback, values in feedbacks.items %}
+                                <div id="pie-{{feedback}}" class="col-lg-6 mt-4" style="height:400px;"></div>
+                                <script>
+                                    // Build the pie-chart
+                                    Highcharts.chart('pie-{{feedback}}', {
+                                        chart: {
+                                            plotBackgroundColor: null,
+                                            plotBorderWidth: null,
+                                            plotShadow: false,
+                                            type: 'pie'
+                                        },
+                                        title: {
+                                            text: '{{feedback}}'
+                                        },
+                                        tooltip: {
+                                            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                                        },
+                                        plotOptions: {
+                                            pie: {
+                                                allowPointSelect: true,
+                                                cursor: 'pointer',
+                                                dataLabels: {
+                                                    enabled: true
+                                                },
+                                                showInLegend: true
+                                            }
+                                        },
+                                        series: [{
+                                            name: ' {{ feedback }}',
+                                            colorByPoint: true,
+                                            data: [{
+                                                name: 'Excellent',
+                                                y: {{ values.subE }},
+                                            sliced: true,
+                                            selected: true
+                                            }, {
+                                        name: 'Very Good',
+                                        y: {{ values.subV }},
+                                            }, {
+                                            name: 'Good',
+                                            y: {{ values.subG }}
+                                            }, {
+                                            name: 'Average',
+                                            y: {{ values.subA }}
+                                            }, {
+                                            name: 'Poor',
+                                            y: {{ values.subP }}
+                                            }, {
+                                            name: 'Not Satisfactory',
+                                            y: {{ values.subN }}
+                                            }]
+                                        }]
+                                    });
+                                </script>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Line Chart Result -->
+                        <div id="linechart" class="tab-pane container mt-4">
+                            <div class="row">
+                                {% for feedback, values in feedbacks.items %}
+                                <div id="line-{{feedback}}" class="col-lg-6 mt-4" style="height:400px;"></div>
+                                <script>
+                                    Highcharts.chart('line-{{feedback}}', {
+                                        chart: {
+                                            type: 'column',
+                                        },
+                                        title: {
+                                            text: '{{feedback}}'
+                                        },
+                                        xAxis: {
+                                            categories: ['{{ feedback }}']
+                                        },
+                                        yAxis: [{
+                                            className: 'highcharts-color-0',
+                                            title: {
+                                                text: 'Overall Values'
+                                            },
+                                            categories: [0]
+                                        }],
+                                        plotOptions: {
+                                            column: {
+                                                borderRadius: 5,
+                                            }
+                                        },
+                                        series: [{
+                                            name: 'Excellent',
+                                            data: [{{ values.subE }}]
+                                    }, {
+                                        name: 'Very Good',
+                                        data: [{{ values.subV }}]
+                                    }, {
+                                            name: 'Good',
+                                            data: [{{ values.subG }}]
+                                    }, {
+                                            name: 'Average',
+                                            data: [{{ values.subA }}]
+                                    }, {
+                                            name: 'Poor',
+                                            data: [{{ values.subP }}]
+                                    }, {
+                                            name: 'Not Satisfactory',
+                                            data: [{{ values.subN }}]
+                                    }]
+                                });
+                                </script>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Persistant Tabs -->
+<script>
+    $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
+        localStorage.setItem('activeTab', $(e.target).attr('href'));
+    });
+
+    var activeTab = localStorage.getItem('activeTab');
+    if (activeTab) {
+        $('.nav-justified a[href="' + activeTab + '"]').tab('show');
+    }
+</script>
+            </div>
+
+            <!-- Defaulter -->
+            <div id="defaulter" class="tab-pane container p-0">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ul class="nav nav-pills nav-justified">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="pill" href="#teacher_table2">Tabular
+                                    Result
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="pill" href="#piechart2">Pie-Chart
+                                    Result</a>
+                                </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="pill" href="#linechart2">Line-Chart
+                                    Result
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Persistant Tabs -->
+                <script>
+                    $('a[data-toggle="pill"]').on('shown.bs.tab1', function (e1) {
+                        localStorage.setItem('activeTab', $(e1.target).attr('href'));
+                    });
+
+                    var activeTab1 = localStorage.getItem('activeTab');
+                    if (activeTab1) {
+                        $('.nav-justified a[href="' + activeTab1 + '"]').tab1('show');
+                    }
+                </script>
+                <div class="col-lg-12 p-0">
+                    <div class="tab-content">
+                        <!-- Table Result -->
+                        <div id="teacher_table2" class="tab-pane container active p-0">
+                            {% for feedback, values in feedbacks2.items %}
+                            <h3 class="text-center mt-5 mb-3">
+                                {{ feedback }}
+                            </h3>
+                            {% if values.count2 == 1 %}
+                                <p>{{ values.count2 }} student has given feedback</p>
+                            {% else %}
+                                <p>{{ values.count2 }} students have given feedback</p>
+                            {% endif %}
+                            <!-- Tabular Result -->
+                            {% if not values.status %}
+                            <!-- Theoretical Questions -->
+                            <table class="table table-striped table-bordered" width=100%>
+                                <thead class="table table-primary">
+                                    <tr>
+                                        <th>Sr. No.</th>
+                                        <th class="text-center">Questions</th>
+                                        <th>Excellent</th>
+                                        <th class="text-center">Very Good</th>
+                                        <th>Good</th>
+                                        <th>Average</th>
+                                        <th>Poor</th>
+                                        <th class="text-center">Not Satisfactory</th>
+                                        <th>Total Marks</th>
+                                        <th>Out Of</th>
+                                        <th>Percentage</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>How much teaching is relevant to syllabus by the teacher?</td>
+                                            <td class="text-center">{{ values.q1E }} </td>
+                                            <td class="text-center">{{ values.q1V }}</td>
+                                            <td class="text-center">{{ values.q1G }}</td>
+                                            <td class="text-center">{{ values.q1A }}</td>
+                                            <td class="text-center">{{ values.q1P }}</td>
+                                            <td class="text-center">{{ values.q1N }}</td>
+                                            <td class="text-center">{{ values.q1T }}</td>
+                                            <td class="text-center">{{ values.q1O }}</td>
+                                            <td class="text-center">{{ values.q1Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>How much teacher creates the subject interesting?</td>
+                                            <td class="text-center">{{ values.q2E }} </td>
+                                            <td class="text-center">{{ values.q2V }}</td>
+                                            <td class="text-center">{{ values.q2G }}</td>
+                                            <td class="text-center">{{ values.q2A }}</td>
+                                            <td class="text-center">{{ values.q2P }}</td>
+                                            <td class="text-center">{{ values.q2N }}</td>
+                                            <td class="text-center">{{ values.q2T }}</td>
+                                            <td class="text-center">{{ values.q2O }}</td>
+                                            <td class="text-center">{{ values.q2Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td>How regular teacher reports at right time to class?</td>
+                                            <td class="text-center">{{ values.q3E }} </td>
+                                            <td class="text-center">{{ values.q3V }}</td>
+                                            <td class="text-center">{{ values.q3G }}</td>
+                                            <td class="text-center">{{ values.q3A }}</td>
+                                            <td class="text-center">{{ values.q3P }}</td>
+                                            <td class="text-center">{{ values.q3N }}</td>
+                                            <td class="text-center">{{ values.q3T }}</td>
+                                            <td class="text-center">{{ values.q3O }}</td>
+                                            <td class="text-center">{{ values.q3Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>4</td>
+                                            <td>How efficiently lecture time is utilized by the teacher?</td>
+                                            <td class="text-center">{{ values.q4E }} </td>
+                                            <td class="text-center">{{ values.q4V }}</td>
+                                            <td class="text-center">{{ values.q4G }}</td>
+                                            <td class="text-center">{{ values.q4A }}</td>
+                                            <td class="text-center">{{ values.q4P }}</td>
+                                            <td class="text-center">{{ values.q4N }}</td>
+                                            <td class="text-center">{{ values.q4T }}</td>
+                                            <td class="text-center">{{ values.q4O }}</td>
+                                            <td class="text-center">{{ values.q4Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>5</td>
+                                            <td>How efficiently board writing is readable to last benches?</td>
+                                            <td class="text-center">{{ values.q5E }} </td>
+                                            <td class="text-center">{{ values.q5V }}</td>
+                                            <td class="text-center">{{ values.q5G }}</td>
+                                            <td class="text-center">{{ values.q5A }}</td>
+                                            <td class="text-center">{{ values.q5P }}</td>
+                                            <td class="text-center">{{ values.q5N }}</td>
+                                            <td class="text-center">{{ values.q5T }}</td>
+                                            <td class="text-center">{{ values.q5O }}</td>
+                                            <td class="text-center">{{ values.q5Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>6</td>
+                                            <td>How much efficiently voice of a teacher is clear and understandable?</td>
+                                            <td class="text-center">{{ values.q6E }} </td>
+                                            <td class="text-center">{{ values.q6V }}</td>
+                                            <td class="text-center">{{ values.q6G }}</td>
+                                            <td class="text-center">{{ values.q6A }}</td>
+                                            <td class="text-center">{{ values.q6P }}</td>
+                                            <td class="text-center">{{ values.q6N }}</td>
+                                            <td class="text-center">{{ values.q6T }}</td>
+                                            <td class="text-center">{{ values.q6O }}</td>
+                                            <td class="text-center">{{ values.q6Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>7</td>
+                                            <td>How efficiently practical real life examples are given to the students?</td>
+                                            <td class="text-center">{{ values.q7E }} </td>
+                                            <td class="text-center">{{ values.q7V }}</td>
+                                            <td class="text-center">{{ values.q7G }}</td>
+                                            <td class="text-center">{{ values.q7A }}</td>
+                                            <td class="text-center">{{ values.q7P }}</td>
+                                            <td class="text-center">{{ values.q7N }}</td>
+                                            <td class="text-center">{{ values.q7T }}</td>
+                                            <td class="text-center">{{ values.q7O }}</td>
+                                            <td class="text-center">{{ values.q7Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>8</td>
+                                            <td>How efficient review is made on previous class by the teacher?</td>
+                                            <td class="text-center">{{ values.q8E }} </td>
+                                            <td class="text-center">{{ values.q8V }}</td>
+                                            <td class="text-center">{{ values.q8G }}</td>
+                                            <td class="text-center">{{ values.q8A }}</td>
+                                            <td class="text-center">{{ values.q8P }}</td>
+                                            <td class="text-center">{{ values.q8N }}</td>
+                                            <td class="text-center">{{ values.q8T }}</td>
+                                            <td class="text-center">{{ values.q8O }}</td>
+                                            <td class="text-center">{{ values.q8Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>9</td>
+                                            <td>How efficiently notes are provided by teacher?</td>
+                                            <td class="text-center">{{ values.q9E }} </td>
+                                            <td class="text-center">{{ values.q9V }}</td>
+                                            <td class="text-center">{{ values.q9G }}</td>
+                                            <td class="text-center">{{ values.q9A }}</td>
+                                            <td class="text-center">{{ values.q9P }}</td>
+                                            <td class="text-center">{{ values.q9N }}</td>
+                                            <td class="text-center">{{ values.q9T }}</td>
+                                            <td class="text-center">{{ values.q9O }}</td>
+                                            <td class="text-center">{{ values.q9Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>10</td>
+                                            <td>How efficiently teacher is available for clearing doubts of students?</td>
+                                            <td class="text-center">{{ values.q10E }} </td>
+                                            <td class="text-center">{{ values.q10V }}</td>
+                                            <td class="text-center">{{ values.q10G }}</td>
+                                            <td class="text-center">{{ values.q10A }}</td>
+                                            <td class="text-center">{{ values.q10P }}</td>
+                                            <td class="text-center">{{ values.q10N }}</td>
+                                            <td class="text-center">{{ values.q10T }}</td>
+                                            <td class="text-center">{{ values.q10O }}</td>
+                                            <td class="text-center">{{ values.q10Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>11</td>
+                                            <td>How efficient students doubts address Satisfactorily?</td>
+                                            <td class="text-center">{{ values.q11E }} </td>
+                                            <td class="text-center">{{ values.q11V }}</td>
+                                            <td class="text-center">{{ values.q11G }}</td>
+                                            <td class="text-center">{{ values.q11A }}</td>
+                                            <td class="text-center">{{ values.q11P }}</td>
+                                            <td class="text-center">{{ values.q11N }}</td>
+                                            <td class="text-center">{{ values.q11T }}</td>
+                                            <td class="text-center">{{ values.q11O }}</td>
+                                            <td class="text-center">{{ values.q11Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>12</td>
+                                            <td>What is the overall impression of teacher from your perspective?</td>
+                                            <td class="text-center">{{ values.q12E }} </td>
+                                            <td class="text-center">{{ values.q12V }}</td>
+                                            <td class="text-center">{{ values.q12G }}</td>
+                                            <td class="text-center">{{ values.q12A }}</td>
+                                            <td class="text-center">{{ values.q12P }}</td>
+                                            <td class="text-center">{{ values.q12N }}</td>
+                                            <td class="text-center">{{ values.q12T }}</td>
+                                            <td class="text-center">{{ values.q12O }}</td>
+                                            <td class="text-center">{{ values.q12Perc }}%</td>
+                                        </tr>
+                                    <tr>
+                                        <td>13</td>
+                                        <td class="text-center">Overall Total</td>
+                                        <td class="text-center">{{ values.subE }}</td>
+                                        <td class="text-center">{{ values.subV }}</td>
+                                        <td class="text-center">{{ values.subG }}</td>
+                                        <td class="text-center">{{ values.subA }}</td>
+                                        <td class="text-center">{{ values.subP }}</td>
+                                        <td class="text-center">{{ values.subN }}</td>
+                                        <td class="text-center">{{ values.subT }}</td>
+                                        <td class="text-center">{{ values.subO }}</td>
+                                        <td class="text-center">{{ values.subPerc }}%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            {% else %}
+                                <!-- Practical Questions -->
+                                <table class="table table-striped table-bordered" width=100%>
+                                    <thead class="table table-primary">
+                                        <tr>
+                                            <th>Sr. No.</th>
+                                            <th class="text-center">Questions</th>
+                                            <th>Excellent</th>
+                                            <th class="text-center">Very Good</th>
+                                            <th>Good</th>
+                                            <th>Average</th>
+                                            <th>Poor</th>
+                                            <th class="text-center">Not Satisfactory</th>
+                                            <th>Total Marks</th>
+                                            <th>Out Of</th>
+                                            <th>Percentage</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>How much you are satisfied by connections between practical work in practical classes really happen?</td>
+                                            <td class="text-center">{{ values.q1E }} </td>
+                                            <td class="text-center">{{ values.q1V }}</td>
+                                            <td class="text-center">{{ values.q1G }}</td>
+                                            <td class="text-center">{{ values.q1A }}</td>
+                                            <td class="text-center">{{ values.q1P }}</td>
+                                            <td class="text-center">{{ values.q1N }}</td>
+                                            <td class="text-center">{{ values.q1T }}</td>
+                                            <td class="text-center">{{ values.q1O }}</td>
+                                            <td class="text-center">{{ values.q1Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>How approachable is the teacher in practical classes?</td>
+                                            <td class="text-center">{{ values.q2E }} </td>
+                                            <td class="text-center">{{ values.q2V }}</td>
+                                            <td class="text-center">{{ values.q2G }}</td>
+                                            <td class="text-center">{{ values.q2A }}</td>
+                                            <td class="text-center">{{ values.q2P }}</td>
+                                            <td class="text-center">{{ values.q2N }}</td>
+                                            <td class="text-center">{{ values.q2T }}</td>
+                                            <td class="text-center">{{ values.q2O }}</td>
+                                            <td class="text-center">{{ values.q2Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td>How successful is the teacher in responding the questions and queries promptly and effectively?</td>
+                                            <td class="text-center">{{ values.q3E }} </td>
+                                            <td class="text-center">{{ values.q3V }}</td>
+                                            <td class="text-center">{{ values.q3G }}</td>
+                                            <td class="text-center">{{ values.q3A }}</td>
+                                            <td class="text-center">{{ values.q3P }}</td>
+                                            <td class="text-center">{{ values.q3N }}</td>
+                                            <td class="text-center">{{ values.q3T }}</td>
+                                            <td class="text-center">{{ values.q3O }}</td>
+                                            <td class="text-center">{{ values.q3Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>4</td>
+                                            <td>How effective is the teacher in evaluating the practical work?</td>
+                                            <td class="text-center">{{ values.q4E }} </td>
+                                            <td class="text-center">{{ values.q4V }}</td>
+                                            <td class="text-center">{{ values.q4G }}</td>
+                                            <td class="text-center">{{ values.q4A }}</td>
+                                            <td class="text-center">{{ values.q4P }}</td>
+                                            <td class="text-center">{{ values.q4N }}</td>
+                                            <td class="text-center">{{ values.q4T }}</td>
+                                            <td class="text-center">{{ values.q4O }}</td>
+                                            <td class="text-center">{{ values.q4Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>5</td>
+                                            <td>How much practicals runs smoothly according to university syllabus?</td>
+                                            <td class="text-center">{{ values.q5E }} </td>
+                                            <td class="text-center">{{ values.q5V }}</td>
+                                            <td class="text-center">{{ values.q5G }}</td>
+                                            <td class="text-center">{{ values.q5A }}</td>
+                                            <td class="text-center">{{ values.q5P }}</td>
+                                            <td class="text-center">{{ values.q5N }}</td>
+                                            <td class="text-center">{{ values.q5T }}</td>
+                                            <td class="text-center">{{ values.q5O }}</td>
+                                            <td class="text-center">{{ values.q5Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>6</td>
+                                            <td>How well does the teacher succeeds in stimulating and sustaining student's interest in practical work?</td>
+                                            <td class="text-center">{{ values.q6E }} </td>
+                                            <td class="text-center">{{ values.q6V }}</td>
+                                            <td class="text-center">{{ values.q6G }}</td>
+                                            <td class="text-center">{{ values.q6A }}</td>
+                                            <td class="text-center">{{ values.q6P }}</td>
+                                            <td class="text-center">{{ values.q6N }}</td>
+                                            <td class="text-center">{{ values.q6T }}</td>
+                                            <td class="text-center">{{ values.q6O }}</td>
+                                            <td class="text-center">{{ values.q6Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>7</td>
+                                            <td>Overall, how you are satisfied with the conduct of practicals?</td>
+                                            <td class="text-center">{{ values.q7E }} </td>
+                                            <td class="text-center">{{ values.q7V }}</td>
+                                            <td class="text-center">{{ values.q7G }}</td>
+                                            <td class="text-center">{{ values.q7A }}</td>
+                                            <td class="text-center">{{ values.q7P }}</td>
+                                            <td class="text-center">{{ values.q7N }}</td>
+                                            <td class="text-center">{{ values.q7T }}</td>
+                                            <td class="text-center">{{ values.q7O }}</td>
+                                            <td class="text-center">{{ values.q7Perc }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>8</td>
+                                            <td class="text-center">Overall Total</td>
+                                            <td class="text-center">{{ values.subE }}</td>
+                                            <td class="text-center">{{ values.subV }}</td>
+                                            <td class="text-center">{{ values.subG }}</td>
+                                            <td class="text-center">{{ values.subA }}</td>
+                                            <td class="text-center">{{ values.subP }}</td>
+                                            <td class="text-center">{{ values.subN }}</td>
+                                            <td class="text-center">{{ values.subT }}</td>
+                                            <td class="text-center">{{ values.subO }}</td>
+                                            <td class="text-center">{{ values.subPerc }}%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            {% endif %}
+                            <div class="row mt-4 mb-3">
+                                <div class="col-lg-2">
+                                    <a href="/teacher/defaulter/suggestions/{{ values.id }}" class="btn btn-primary btn-block">
+                                        Suggestions <i class="fas fa-sticky-note"></i>
+                                    </a>
+                                </div>  
+                            </div>
+                        {% endfor %}
+                        </div>
+
+                        <!-- Pie Chart Result -->
+                        <div id="piechart2" class="tab-pane container top50">
+                            <div class="row">
+                                {% for feedback, values in feedbacks2.items %}
+                                <div id="pie2-{{feedback}}" class="col-lg-6" style="height:400px;"></div>
+                                <script>
+                                    // Build the pie-chart
+                                    Highcharts.chart('pie2-{{feedback}}', {
+                                        chart: {
+                                            plotBackgroundColor: null,
+                                            plotBorderWidth: null,
+                                            plotShadow: false,
+                                            type: 'pie'
+                                        },
+                                        title: {
+                                            text: '{{feedback}}'
+                                        },
+                                        tooltip: {
+                                            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                                        },
+                                        plotOptions: {
+                                            pie: {
+                                                allowPointSelect: true,
+                                                cursor: 'pointer',
+                                                dataLabels: {
+                                                    enabled: true
+                                                },
+                                                showInLegend: true
+                                            }
+                                        },
+                                        series: [{
+                                            name: ' {{ feedback }}',
+                                            colorByPoint: true,
+                                            data: [{
+                                                name: 'Excellent',
+                                                y: {{ values.subE }},
+                                            sliced: true,
+                                            selected: true
+                                }, {
+                                        name: 'Very Good',
+                                        y: {{ values.subV }},
+                                }, {
+                                            name: 'Good',
+                                            y: {{ values.subG }}
+                                }, {
+                                            name: 'Average',
+                                            y: {{ values.subA }}
+                                }, {
+                                            name: 'Poor',
+                                            y: {{ values.subP }}
+                                }, {
+                                            name: 'Not Satisfactory',
+                                            y: {{ values.subN }}
+                                }]
+                            }]
+                        });
+                                </script>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Line Chart Result -->
+                        <div id="linechart2" class="tab-pane container top50">
+                            <div class="row">
+                                {% for feedback, values in feedbacks2.items %}
+                                <div id="line2-{{feedback}}" class="col-lg-6" style="height:400px;"></div>
+                                <script>
+                                    Highcharts.chart('line2-{{feedback}}', {
+                                        chart: {
+                                            type: 'column',
+                                        },
+                                        title: {
+                                            text: '{{feedback}}'
+                                        },
+                                        xAxis: {
+                                            categories: ['{{ feedback }}']
+                                        },
+                                        yAxis: [{
+                                            className: 'highcharts-color-0',
+                                            title: {
+                                                text: 'Overall Values'
+                                            },
+                                            categories: [0]
+                                        }],
+                                        plotOptions: {
+                                            column: {
+                                                borderRadius: 5,
+                                            }
+                                        },
+                                        series: [{
+                                            name: 'Excellent',
+                                            data: [{{ values.subE }}]
+                                    }, {
+                                        name: 'Very Good',
+                                            data: [{{ values.subV }}]
+                                        }, {
+                                        name: 'Good',
+                                            data: [{{ values.subG }}]
+                                        }, {
+                                        name: 'Average',
+                                            data: [{{ values.subA }}]
+                                        }, {
+                                        name: 'Poor',
+                                            data: [{{ values.subP }}]
+                                        }, {
+                                        name: 'Not Satisfactory',
+                                            data: [{{ values.subN }}]
+                                        }]
+                                    });
+                                </script>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+            </div>
+        </div>
+    </div>
+
+<!-- Persistant Tabs -->
+<script>
+    $('a[data-toggle="pill"]').on('shown.bs.tab', function (f) {
+        localStorage.setItem('activeTab', $(f.target).attr('href'));
+    });
+
+    var activeTab2 = localStorage.getItem('activeTab');
+    if (activeTab2) {
+        $('.flex-column a[href="' + activeTab2 + '"]').tab('show');
+    }
+</script>
+{% endblock %}

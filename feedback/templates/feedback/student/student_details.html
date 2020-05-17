@@ -1,0 +1,196 @@
+{% extends "feedback/admin/base_admin.html" %}
+
+{% block title %}Student Details{% endblock %}
+
+<!--Change Password -->
+{% block pass %}
+    <a href="{% url 'password_change' %}" class="dropdown-item" title="Change password">
+        Change Password <span><i class="fas fa-key"></i></span>
+    </a>
+    <div class="dropdown-divider"></div>
+{% endblock %}
+
+{% block index %}
+<div class="col-lg-12">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-8 pt-4">
+                <form action="{% url 'student_edit' %}" method="POST" class="detail-form details">
+                    {% csrf_token %}
+                    <input type="hidden" value="{{ student.id }}" name="id">
+                    <div class="form-group form-row">
+                        <label for="username">Username:</label>
+                        <input type="text" name="username" id="username" value="{{ student.user.username }}" required="True">
+                    </div>
+                    <div class="form-group form-row">
+                        <label for="first_name">First Name:</label>
+                        <input type="text" name="first_name" id="first_name" value="{{ student.user.first_name }}" required="True">
+                    </div>
+                    <div class="form-group form-row">
+                        <label for="last_name">Last Name:</label>
+                        <input type="text" name="last_name" id="last_name" value="{{ student.user.last_name }}" required="True">
+                    </div>
+                    <div class="form-group form-row">
+                        <label for="email">Email Address:</label>
+                        <input type="email" name="email" id="email" value="{{ student.user.email }}" required="True">
+                    </div>
+                    <div class="form-group form-row">
+                        <label for="attendance">Attendance:</label>
+                        <input type="text" name="attendance" id="attendance" value="{{ student.attendance }}" maxlength="6"
+                            required="True">
+                    </div>
+                    <div class="form-group form-row">
+                        <label for="department">Department:</label>
+                        <select class="form-control" name="department" id="department" required="True">
+                            {% if student.department.department_name == "First Year" %}
+                            {% if student.semester == 1 %}
+                            <option selected value="{{ student.department }}">
+                                {{ student.department }}
+                            </option>
+                            {% elif student.semester == 2 %}
+                            <option selected value="{{ student.department }}">
+                                {{ student.department }}
+                            </option>
+                            {% endif %}
+                            {% endif %}
+                            {% if not student.department.department_name == "First Year" %}
+                                {% if student.department.department_name == "Computer Engineering" %}
+                            <option selected value="{{ student.department }}">
+                                {{ student.department }}
+                            </option>
+                            <option value="Mechanical Engineering">Mechanical Engineering</option>
+                            <option value="Civil Engineering">Civil Engineering</option>
+                            <option value="Chemical Engineering">Chemical Engineering</option>
+                            <option value="ExTC Engineering">ExTC Engineering</option>
+                            {% elif student.department.department_name == "Mechanical Engineering" %}
+                            <option value="Computer Engineering">Computer Engineering</option>
+                            <option selected value="{{ student.department }}">
+                                {{ student.department }}
+                            </option>
+                            <option value="Civil Engineering">Civil Engineering</option>
+                            <option value="Chemical Engineering">Chemical Engineering</option>
+                            <option value="ExTC Engineering">ExTC Engineering</option>
+                            {% elif student.department.department_name == "Civil Engineering" %}
+                            <option value="Computer Engineering">Computer Engineering</option>
+                            <option value="Mechanical Engineering">Mechanical Engineering</option>
+                            <option selected value="{{ student.department }}">
+                                {{ student.department }}
+                            </option>
+                            <option value="Chemical Engineering">Chemical Engineering</option>
+                            <option value="ExTC Engineering">ExTC Engineering</option>
+                            {% elif student.department.department_name == "Chemical Engineering" %}
+                            <option value="Computer Engineering">Computer Engineering</option>
+                            <option value="Mechanical Engineering">Mechanical Engineering</option>
+                            <option value="Civil Engineering">Civil Engineering</option>
+                            <option selected value="{{ student.department }}">
+                                {{ student.department }}
+                            </option>
+                            <option value="ExTC Engineering">ExTC Engineering</option>
+                            {% else %}
+                            <option value="Computer Engineering">Computer Engineering</option>
+                            <option value="Mechanical Engineering">Mechanical Engineering</option>
+                            <option value="Civil Engineering">Civil Engineering</option>
+                            <option value="Chemical Engineering">Chemical Engineering</option>
+                            <option selected value="{{ student.department }}">
+                                {{ student.department }}
+                            </option>
+                            {% endif %}
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="semester">Semester:</label>
+                        <select class="form-control" name="semester" id="semester" required="True">
+                            {% if student.department.department_name == "First Year" %}
+                            {% if student.semester == 1 %}
+                            <option selected value="{{ student.semester }}">
+                                {{ student.semester }}
+                            </option>
+                            <option value="2">2</option>
+                            {% elif student.semester == 2 %}
+                            <option value="1">1</option>
+                            <option selected value="{{ student.semester }}">
+                                {{ student.semester }}
+                            </option>
+                            {% endif %}
+                            {% endif %}
+                            {% if not student.department.department_name == "First Year" %}
+                            {% if student.semester == 3 %}
+                            <option selected value="{{ student.semester }}">
+                                {{ student.semester }}
+                            </option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            {% elif student.semester == 4 %}
+                            <option value="3">3</option>
+                            <option selected value="{{ student.semester }}">
+                                {{ student.semester }}
+                            </option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            {% elif student.semester == 5 %}
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option selected value="{{ student.semester }}">
+                                {{ student.semester }}
+                            </option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            {% elif student.semester == 6 %}
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option selected value="{{ student.semester }}">
+                                {{ student.semester }}
+                            </option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            {% elif student.semester == 7 %}
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option selected value="{{ student.semester }}">
+                                {{ student.semester }}
+                            </option>
+                            <option value="8">8</option>
+                            {% else %}
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option selected value="{{ student.semester }}">
+                                {{ student.semester }}
+                            </option>
+                            {% endif %}
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="row pt-2">
+                        <div class="col-lg-4"></div>
+                        <div class="col-lg-2">
+                            <button type="submit" class="btn btn-primary btn-block">
+                                Update <i class="fas fa-angle-double-up"></i>
+                            </button>
+                        </div>
+                        <div class="col-lg-1"></div>
+                        <div class="col-lg-3">
+                            <a href="/admin/student/list" class="btn btn-info btn-block">
+                                Go Back <i class="fas fa-reply"></i>
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

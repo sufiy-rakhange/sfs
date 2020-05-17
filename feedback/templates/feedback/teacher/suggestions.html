@@ -1,0 +1,54 @@
+{% extends "feedback/teacher/base_teacher.html" %}
+
+{% block title %} Suggestions {% endblock %}
+
+{% block pass %}
+    <!--Change Password -->
+        <a href="{% url 'password_change' %}" class="dropdown-item" title="Change password">
+            Change Password <span><i class="fas fa-key"></i></span>
+        </a>
+        <div class="dropdown-divider"></div>
+{% endblock %}
+
+{% block subjectbody %}
+    <h3 class="text-center mb-4">
+        <b>Subject</b> : <kbd>{{ feedback.0.subject.subject_name }}</kbd>
+    </h3>
+
+    {% if regulars.0.suggestions %}
+        <h3 class="text-center mt-5 mb-3"><u>Regular Suggestions</u></h3>
+        {% for regular in regulars %}
+            <textarea rows="5" class="form-control mt-4 mb-4 slide" name="suggestions" id="suggestions" disabled>{{ regular.suggestions }}</textarea>
+        {% endfor %}
+    {% endif %}
+
+    {% if defaulters.0.suggestions %}
+        <h3 class="text-center mt-5 mb-3"><u>Defaulter Suggestions</u></h3>
+        {% for defaulter in defaulters %}
+            <textarea rows="5"  class="form-control mt-4 mb-4 slide" name="suggestions" id="suggestions" disabled>{{ defaulter.suggestions }}</textarea>
+        {% endfor %}
+    {% endif %}
+
+    {% if not regulars.0.suggestions and not defaulters.0.suggestions %}
+        <!-- When there is no suggestions -->
+        <div class="row top50">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6">
+                <div class="card error slide">
+                    <h1 class="text-center">
+                        <i class="fas fa-quote-left"></i> No suggestions to display <i class="fas fa-quote-right"></i>
+                    </h1>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    
+    <div class="row mt-5">
+        <div class="col-lg-5"></div>
+        <div class="col-lg-2">
+            <a href="/teacher" type="button" class="btn btn-info btn-block">
+                Go Back <i class="fas fa-reply"></i>
+            </a>
+        </div>
+    </div>
+{% endblock %}

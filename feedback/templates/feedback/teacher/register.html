@@ -1,0 +1,132 @@
+{% extends "feedback/teacher/base_teacher.html" %}
+{% block title %}
+    Register
+{% endblock %}
+{% block loginbody %}
+{% if messages %}
+    {% for message in messages %}
+    <div class="row">
+      <div class="col-lg-4"></div>
+      <div class="col-lg-4">
+          <div class="alert alert-primary alert-dismissible fade show top50" id="popup">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>{{ message }}</strong>
+          </div>
+      </div>                
+  </div>
+    {% endfor %}
+{% endif %}
+<div class="row top50">
+    <div class="col-lg-3"></div>
+    <div class="col-lg-7">
+        <div class="jumbotron" id="popup">
+            <form action="{% url 'register' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <h3 class="text-center">Teacher Registration</h3>
+                <hr>
+                <div class="row">
+                    <div class="col-lg-3"></div>
+                    <b>Note:-</b> <p> Fields mark with <b class="asterick">*</b> are mandatory</p>
+                </div>
+                <div class="row">
+                    <div class="col-lg-5">
+                        <label for="first_name"><b class="asterick">*</b> First Name:</label>
+                        {{ form.first_name }}
+                    </div>
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-5">
+                        <label for="last_name"><b class="asterick">*</b> Last Name:</label>
+                        {{ form.last_name }}
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-lg-5">
+                        <label for="username"><b class="asterick">*</b> Username:</label>
+                        {{ form.username }}
+                    </div>
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-5">
+                        <label for="password"><b class="asterick">*</b> Password:</label>
+                        <div class="input-group">
+                            {{ form.password }}
+                            <div class="input-group-append">
+                                <span class="btn passShowHide" onclick="show_hide();">
+                                    <i id="pass" class="fas fa-eye"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-lg-5">
+                        <label for="email"><b class="asterick">*</b> Email:</label>
+                        {{ form.email }}
+                    </div>
+                <div class="col-lg-2"></div>
+                    <div class="col-lg-5">
+                        <label for="department"><b class="asterick">*</b> Select Department:</label>
+                        <select name="department" id="department" class="form-control" required="True">
+                            <option value="" selected disabled>--Select Department--</option>
+                            <option value="First Year">First Year</option>
+                            <option value="Computer Engineering">Computer Engineering</option>
+                            <option value="Mechanical Engineering">Mechanical Engineering</option>
+                            <option value="Civil Engineering">Civil Engineering</option>
+                            <option value="Chemical Engineering">Chemical Engineering</option>
+                            <option value="ExTC Engineering">ExTC Engineering</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-lg-5">
+                        <label for="coordinator"><b class="asterick">*</b> Feedback Co-ordinator:</label>
+                        <select name="coordinator" id="coordinator" class="form-control" required="True">
+                            <option value="" selected disabled>Feedback Co-ordinator?</option>
+                            <option value="True">Yes</option>
+                            <option value="False">No</option>
+                        </select>
+                    </div>
+                <div class="col-lg-2"></div>
+                    <div class="col-lg-5">
+                        <label for="HOD"><b class="asterick">*</b> HOD of Department:</label>
+                        <select name="HOD" id="HOD" class="form-control" required="True">
+                            <option value="" selected disabled>--HOD of Department?--</option>
+                            <option value="True">Yes</option>
+                            <option value="False">No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <p class="mt-1">Image File:<sub> (jpg, jpeg & png) formats only</sub></p>
+                    <div class="col-lg-12">
+                        {{ form.image }}
+                        <label class="custom-file-label" for="image">Choose an Image File.</label>
+                    </div>
+                </div>
+                 <!-- JQuery for displaying file name after choosing it -->
+                 <script>
+                    $(".custom-file-input").on("change",function () {
+                        var fileName = $(this).val().split("\\").pop();
+                        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+                    });
+                </script>
+                <div class="row mt-3">
+                    <div class="col-lg-4"></div>
+                    <div class="col-lg-4">
+                        <button type="submit" class="btn btn-primary btn-block" onclick="return register();">
+                            Register <i class="fas fa-user-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                <hr>
+                <h5 class="text-center">Already have an account? <a href="{% url 'teacher_login' %}">Log In</a></h5>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Footer -->
+<footer class="footer">
+    <strong>
+      Developed by <a href="https://sufiy-rakhange.github.io/Portfolio/" class="footer-button"><u>SUFIYAN RAKHANGE</u></a> & Team.
+    </strong>
+  </footer>
+{% endblock %}

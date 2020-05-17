@@ -1,0 +1,86 @@
+{% extends "feedback/admin/base_admin.html" %}
+
+{% block title %}Moderations{% endblock %}
+
+{% block pass %}
+<!--Change Password -->
+<a href="{% url 'password_change' %}" class="dropdown-item" title="Change password">
+    Change Password <span><i class="fas fa-key"></i></span>
+</a>
+<div class="dropdown-divider"></div>
+{% endblock %}
+
+{% block index %}
+<div class="col-lg-2 pr-0 pt-4 menu">
+    <ul class="nav nav-pills nav-fill flex-column">
+        <li class="nav-item"><a class="nav-link br-0" href="/admin"
+                title="Add Student">
+                Add Student
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link br-0" href="{% url 'student_list' %}"
+                title="Student Details">
+                Student Details
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link br-0" href="{% url 'teacher_list' %}"
+                title="Teacher Details">
+                Teacher Details
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active br-0" href="{% url 'moderate' %}"
+                title="Moderate">
+                Moderate Teachers<span class="badge badge-primary badge-lg">{{ length }}</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="col-lg-1"></div>
+<div class="col-lg-8 pt-5">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="row mt-4">
+                <div class="col-lg-3"></div>
+                <div class="col-lg-6">
+                    <div class="alert alert-primary alert-dismissible fade show" id="popup">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <strong>{{ message }}</strong>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <div class="row">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-6">
+            {% if length == 0 %}
+            <div class="card error top150">
+                <h1 class="text-center">
+                    <i class="fas fa-quote-left"></i> No Teacher to be Moderated <i class="fas fa-quote-right"></i>
+                </h1>
+            </div>
+            {% else %}
+            {% for t in teacher %}
+            <div class="card mt-5 mb-5 slide">
+                <div class="row">
+                    <div class="col-lg-4"></div>
+                    <h5 class="text-center mt-3 mb-3">
+                        Name: {{ t.user.first_name}} {{t.user.last_name}}
+                    </h5>
+                </div>
+                <div class="row">
+                    <div class="col-lg-5"></div>
+                    <a href="/admin/moderate/{{ t.id }}" class="text-center btn btn-outline-info mb-4">
+                        Moderate
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

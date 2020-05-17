@@ -1,0 +1,108 @@
+{% extends "feedback/admin/base_admin.html" %}
+
+{% block title %}Moderate{% endblock %}
+
+<!--Change Password -->
+{% block pass %}
+    <a href="{% url 'password_change' %}" class="dropdown-item" title="Change password">
+        Change Password <span><i class="fas fa-key"></i></span>
+    </a>
+    <div class="dropdown-divider"></div>
+{% endblock %}
+
+{% block index %}
+<div class="col-lg-12">
+    <div class="container">
+        <div class="row card mb-5 mt-5">
+            <div class="row mt-4">
+                <div class="col-lg-1"></div>
+                <div class="col-lg-3">
+                    <div class="form-group mt-2">
+                        <label for="first_name">First Name:</label>
+                        <input type="text" class="form-control" id="first_name" value="{{ teacher.user.first_name }}">
+                    </div>
+                </div>
+                <div class="col-lg-3"></div>
+                <div class="col-lg-3">
+                    <div class="form-group mt-2">
+                        <label for="last_name">Last Name:</label>
+                        <input type="text" class="form-control" id="last_name" value="{{ teacher.user.last_name }}">
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-lg-1"></div>
+                <div class="col-lg-9">
+                    <div class="form-group">
+                        <label for="email">Email Address:</label>
+                        <input type="text" class="form-control" id="email" value="{{ teacher.user.email }}">
+                    </div>
+                </div>
+            </div>
+            <!-- Approval -->
+            <form class="form-group" action="{% url 'approve' %}" method="POST">
+                {% csrf_token %}
+                <div class="row mt-2">
+                    <div class="col-lg-1"></div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label for="HOD">HOD of Department?</label>
+                            <select name="HOD" id="HOD" class="form-control" required="True">
+                                {% if teacher.hod %}
+                                    <option value="True" selected>Yes</option>
+                                    <option value="False">No</option>
+                                {% else %}
+                                    <option value="True">Yes</option>
+                                    <option value="False" selected>No</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label for="coordinator">Feedback Co-ordinator?</label>
+                            <select name="coordinator" id="coordinator" class="form-control" required="True">
+                                {% if teacher.coordinator %}
+                                    <option value="True" selected>Yes</option>
+                                    <option value="False">No</option>
+                                {% else %}
+                                    <option value="True">Yes</option>
+                                    <option value="False" selected>No</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            <div class="row mt-4">
+                <div class="col-lg-4"></div>
+                <div class="col-lg-2">
+                    <input type="hidden" name="id" value="{{ teacher.id }}">
+                    <button type="submit"  class="btn btn-primary">
+                        Approve
+                    </button>
+                </div>
+            </form>
+            <!-- Decline -->
+            <form class="form-group" action="{% url 'decline' %}" method="POST">
+                {% csrf_token %}
+                <div class="col-lg-4">
+                    <input type="hidden" name="id" value="{{ teacher.id }}">
+                    <button type="submit" class="btn btn-danger">
+                        Decline
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Button for returning on previous page -->
+    <div class="row">
+        <div class="col-lg-10"></div>
+        <div class="col-lg-2">
+            <a href="/admin/moderate" class="btn btn-info btn-block">
+                Go Back <i class="fas fa-reply"></i>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

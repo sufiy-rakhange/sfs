@@ -1,0 +1,66 @@
+{% extends "feedback/admin/base_admin.html" %}
+{% block title %}
+Admin
+{% endblock %}
+{% block index %}
+<div class="col-lg-12">
+  <div class="container">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="row mt-4">
+                <div class="col-lg-4"></div>
+                <div class="col-lg-4">
+                    <div class="alert alert-primary alert-dismissible fade show" id="popup">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <strong>{{ message }}</strong>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+      <div class="row mt-5">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4 ">
+            <div class="jumbotron text-center" id="popup">
+              <form action="{% url 'sfsadmin_login' %}" method="POST">
+                  {% csrf_token %}
+                  <h3 class="text-center">Admin Login</h3>
+                  <hr>
+                  <!-- Username -->
+                  <div class="form-group">
+                    {{ form.username }}
+                  </div>
+                  <!-- Password -->
+                  <div class="form-group">
+                    <div class="input-group">
+                      {{ form.password }}
+                      <div class="input-group-append">
+                        <span class="btn passShowHide" onclick="show_hide();">
+                          <i id="pass" class="fas fa-eye"></i>
+                        </span>
+                      </div> 
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block" onclick="return login();" title="Log In">
+                      Log In <i class="fas fa-sign-in-alt"></i>
+                    </button>
+                  </div>
+                  <hr>
+                  <!-- Password reset -->
+                  <h6 class="text-center">
+                    <a href="{% url 'password_reset' %}" title="Reset password">Forgot Password?</a>
+                  </h6>
+              </form>
+          </div>
+          </div>
+        </div>
+  </div>
+  <!-- Footer -->
+  <footer class="footer">
+    <strong>
+      Developed by <a href="https://sufiy-rakhange.github.io/Portfolio/" class="footer-button">SUFIYAN RAKHANGE</a> & Team.
+    </strong>
+  </footer>
+</div>
+{% endblock %}

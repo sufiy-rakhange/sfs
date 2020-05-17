@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+        <!-- Popper JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+        <!-- Latest compiled JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <!-- Including JavaScript Files -->
+        <script src="/static/feedback/script.js"></script>
+        <!-- Including CSS Files -->
+        <link rel="stylesheet" href="/static/feedback/styles.css">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Font Awesome CDN -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
+        integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
+        
+        <link rel="icon" href="/static/feedback/myimages/mylogo.ico" />
+    </head>
+    <body>
+        <!-- A horizontal navbar that becomes vertical on small screens -->
+        <nav class="navbar navbar-expand-sm bg-primary navbar-light fixed-top">
+            <a class="navbar-brand" href="/">
+                <img class="logo" src="/static/feedback/myimages/logo.png" title="Logo"/>
+            </a>
+            {% if user.is_authenticated %}
+                {% block studentCenter %}{% endblock %}
+            {% endif %}    
+        </nav>
+        <div class="row top14-6"></div>
+        {% if messages %}
+            {% for message in messages %}
+            <div class="row">
+                <div class="col-lg-4"></div>
+                <div class="col-lg-4">
+                    <div class="alert alert-primary alert-dismissible fade show mt-5" id="popup">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <strong class="text-center">{{ message }}</strong>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
+        <div class="container">
+            {% block body %}{% endblock %}
+        </div>
+    </body>
+</html>

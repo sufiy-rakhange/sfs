@@ -1,0 +1,442 @@
+.hide {
+    display: none;
+}
+
+/* Animations for left to right*/
+@keyframes move {
+    0% {
+        opacity: 0;
+        margin-left: -20em;
+        margin-right: 20em;
+    }
+    100% {
+        opacity: 1;
+        margin-left: 0em;
+        margin-right: 0em;
+    }
+}
+.slide {
+    position: relative;
+    animation-name: move;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+/* Animatins for popup */
+@keyframes fade {
+  0% {
+      opacity: 0;
+  }
+  100% {
+      opacity: 1;
+  }
+}
+#popup {
+  position: relative;
+  animation-name: fade;
+  animation-duration: 2.0s;
+  animation-fill-mode: forwards;
+}
+
+/* Dropdown */
+@keyframes down {
+  0% {
+      opacity: 0;
+      margin-top: 0em;
+      margin-bottom: 20em;
+  }
+  100% {
+      opacity: 1;
+      margin-top: 0em;
+      margin-bottom: 0em;
+  }
+}
+.more {
+  position: relative;
+  animation-name: down;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+.jumbotron {
+background: ghostwhite;
+border-radius: 12px;
+border: 1.5px solid blue;
+-webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+-moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+}
+
+.top100 {
+  margin-top: 100px;
+}
+.mt-130 {
+  margin-top: 130px;
+}
+
+.top150 {
+    margin-top: 150px;
+}
+
+.top50 {
+  margin-top: 50px;
+}
+
+body {
+    background-color: whitesmoke;
+  }
+
+.card {
+  -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+  box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+}
+
+.card-body {
+  border: 1px solid blue;
+  background-color: unset;
+}
+
+/* navbar css */
+.bg-primary {
+  background-color: #2c6aac!important;
+}
+
+.passShowHide {
+  border: 1px solid blue;
+  cursor: pointer;
+  background-color: white;
+  color: darkblue;
+}
+
+.passShowHide:hover {
+  background-color: blue;
+  color: black;
+}
+
+.card-footer {
+  background-color: white;
+}
+
+.btn-right {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+#img {
+  height: 85px;
+  width: 100px;
+  background-color: whitesmoke;
+}
+
+input[type="radio"], input[type="checkbox"] {
+  height: 1.2em;
+  width: 1.2em;
+}
+
+input[type="radio"]:hover{
+  cursor: pointer;
+}
+
+.form-check-label {
+  padding-left: 0.5em;
+  padding-top: 0.1em;
+}
+
+.form-check-label:hover {
+  cursor: pointer;
+  background: rgb(214, 204, 190);
+  color: blue;
+}
+
+input[type="checkbox"]:hover {
+  cursor: pointer;
+}
+
+.form-label {
+  padding-left: 0.5em;
+  padding-top: 0.1em;
+}
+
+.form-label:hover {
+  cursor: pointer;
+  background: rgb(214, 204, 190);
+}
+
+.navbar-brand {
+  background-color: unset;
+}
+
+/* design of hod and co-ordintor */
+.navigator {
+  color: #f8f9fa !important;
+  font-weight: 700;
+}
+.navigator:hover {
+  color: #d1d5d8 !important;
+}
+
+.logo {
+  width: 110px;
+  background-color: aliceblue;
+  height: 85px;
+  border-radius: 10px;
+}
+
+hr {
+  border-top: 1.5px solid blue;
+}
+
+.mt-2 {
+  font-weight: 700;
+}
+
+.fa-times-circle {
+  font-size: 700%;
+  color: #dc3545;
+}
+
+.fa-check-circle {
+  font-size: 700%;
+  color: #006600;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+input[type=text], input[type=password], input[type=email], input[type=file], select {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 5px 6px;
+  margin-top: 0;
+}
+
+.form-row {
+  overflow: hidden;
+  padding: 10px;
+  border-bottom: 1px solid #d7d7d7;
+}
+
+.details label {
+  display: block;
+  padding: 4px 10px 0 0;
+  float: left;
+  width: 160px;
+  word-wrap: break-word;
+  line-height: 1;
+}
+
+label {
+  cursor: pointer;
+}
+
+ul {
+  margin-top: none !important;
+}
+
+.fa-bell {
+  color: azure;
+}
+
+.error {
+  padding: 1em;
+  background-color: darkslateblue;
+  color: whitesmoke;
+}
+
+.badge-lg {
+  font-size: 1em ;
+}
+
+.search {
+  background-color: white;
+}
+
+#stInput, #tInput {
+  border-left: none;
+}
+
+.table-primary {
+  background-color: #2c6aac!important;
+  color: white;
+}
+
+.abs {
+  font-weight: 600;
+  color: white;
+  font-size: 1.4em;
+  margin-left: 22.4em;
+  cursor: default;
+}
+
+tbody tr:nth-child(even) {
+  background: lightblue;
+}
+tbody tr:nth-child(even):hover {
+      background: #7f7dd1;
+    color: white;
+}
+tbody tr:nth-child(odd) {
+  background: white !important;
+}
+tbody tr:nth-child(odd):hover {
+  background: #7f7dd1 !important;
+  color: white;
+}
+
+.top14-6 {
+  margin-top: 111px;
+  border-top: 1px solid blue;
+}
+
+.dashboard-panel {
+  min-height: 39rem;
+}
+
+.detail-form input, .detail-form select {
+  width: 35rem;
+}
+
+.menu {
+  background: white;
+  text-align: center;
+  border-right: 1px;
+  border-bottom: 1px;
+}
+
+.br-0 {
+  border-radius: 0!important;
+}
+.noSolid {
+  border: 0px solid !important;
+}
+
+kbd {
+  background-color: #385f88 !important;
+}
+
+.asterick {
+  color: red;
+}
+
+textarea {
+  resize: none;
+  background-color: #ffffff !important;
+}
+
+#suggestions {
+  border: 1px solid blue;
+}
+
+/* Loading Bar */
+#loading {
+  width: 12rem;
+  position: relative;
+  margin: 0 auto;
+}
+
+#loading .impress {
+  position: absolute;
+  width: 13.88rem;
+  height: 40px;
+  filter: progid:DXImageTransform.Microsoft.gradient( startColotstr='#4c4c4c', endColorstr='#333333', GradientType=0 );
+  box-shadow: inset 0 -2px 10px #0000004f;
+  border: 1px solid #222;
+  opacity: 0.4;
+}
+
+/*** set div as container ***/
+#loading .container {
+  position: relative;
+  top: 11px;
+  left: 11px;
+  width: 200px;
+  height: 20px;
+  overflow: hidden;
+  z-index: 10000;
+  box-shadow: inset 0 1px 3px blue;
+}
+
+#loading .container:before {
+  position: absolute;
+  content: " ";
+  width: 100%;
+  height: 50%;
+  background-color: #fff;
+  opacity: 0.2;
+}
+
+/*** start ul config ***/
+#loading ul {
+  position: relative;
+  width: 200%;
+  height: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  z-index: -1;
+}
+
+/*** set li:first-child as our background ***/
+#loading ul li:first-child {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform: none;
+}
+
+/*** set other li's as loading bars ***/
+#loading ul li:nth-child(n+2) {
+  position: relative;
+  width: 7%;
+  height: 100%;
+  transform: skewX(-45deg);
+  background-color: blue;
+  margin-right: 5%;
+  display: inline-block;
+  animation: loading 0.5s infinite linear;
+}
+
+/*** setup the animation ***/
+@keyframes loading {
+  from {left: -10%;}
+  to {left: 3%;}
+}
+
+/* Border for pagination */
+.alert-light {
+  border-color: cornflowerblue !important;
+}
+
+/* footer */
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: white;
+  color: black;
+  text-align: center;
+  padding: 1.5rem;
+  height: 4.5rem;
+  font-size: larger;
+  vertical-align: middle;
+  border-top: #2c6aac 1px solid;
+}
+
+.footer-button:hover {
+  padding: .5em;
+}
+
+.dropdown {
+  list-style-type: none !important;
+}
+
+.fw-600 {
+  font-weight: 600;
+  font-size: large;
+}

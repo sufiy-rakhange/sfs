@@ -1,0 +1,1259 @@
+{% extends "feedback/student/base.html" %}
+{% block title %}
+Feedback
+{% endblock %}
+{% block body %}
+<div class="row pt-4">
+    <!-- Details of Teacher -->
+    <div class="col-lg-2"></div>
+    <div class="card col-lg-3 p-0" id="popup">
+        <img class="card-img-top" src="/static/{{ subject.0.teacher.image }}" alt="Card image" style="width:284px; height:200px; object-fit: contain;">
+        <div class="card-body">
+            <p class="card-text text-center fw-600">Prof. {{ subject.0.teacher.user.first_name }} {{ subject.0.teacher.user.last_name }}</p>
+            <p class="card-text text-center fw-600">{{ subject.0.subject_name }}</p>
+        </div>
+    </div>
+    <div class="col-lg-2"></div>
+    <!-- Details of Options -->
+    <div class="card col-lg-3 p-0" id="popup">
+        <div class="card-header bg-primary">
+            <div class="row">
+                <div class="col-lg-3"></div>
+                <b class="text-light">
+                    Marks Distribution <i class="fas fa-marker"></i>
+                </b>
+            </div>
+        </div>
+        <div class="card-body noSolid">
+            <h4 class="card-text">
+                <kbd>0</kbd> - Not Satisfactory
+            </h4>
+            <h4 class="card-text mt-3">
+                <kbd>1</kbd> - Poor
+            </h4>
+            <h4 class="card-text mt-3">
+                <kbd>2</kbd> - Average
+            </h4>
+            <h4 class="card-text mt-3">
+                <kbd>3</kbd> - Good
+            </h4>
+            <h4 class="card-text mt-3">
+                <kbd>4</kbd> - Very Good
+            </h4>
+            <h4 class="card-text mt-3">
+                <kbd>5</kbd> - Excellent
+            </h4>
+        </div>
+    </div>
+</div>
+<!-- Form for Theory Subject -->
+{% if not subject.0.practical %}
+<form action="/student/feedback/{{ subject.0.teacher.id }}/{{ subject.0.id }}"
+ method="POST" onsubmit="return validate();">
+    {% csrf_token %}
+    <div class="row">
+        <!-- Question 1 -->
+        <div class="col-lg-6">
+            <div class="card mt-4 mb-3 slide" id="q1" title="Question 1" name="q1">
+                <div class="card-header bg-primary">
+                    <b class="text-light">Q1. How much teaching is relevant to the syllabus by the teacher?</b>
+                </div>
+                <div class="card-body custom-control custom-radio">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <!-- Radio 1 -->
+                            <div class="form-check pb-1" title="Not Satisfactory">
+                                <input class="form-check-input" type="radio" name="option1" id="opt1rad1" value="0">
+                                <label class="form-check-label" for="opt1rad1">
+                                    Not Satisfactory
+                                </label>
+                            </div>
+                            <!-- Radio 2 -->
+                            <div class="form-check pb-1" title="Poor">
+                                <input class="form-check-input" type="radio" name="option1" id="opt1rad2" value="1">
+                                <label class="form-check-label" for="opt1rad2">
+                                    Poor
+                                </label>
+                            </div>
+                            <!-- Radio 3 -->
+                            <div class="form-check pb-1" title="Average">
+                                <input class="form-check-input" type="radio" name="option1" id="opt1rad3" value="2">
+                                <label class="form-check-label" for="opt1rad3">
+                                    Average
+                                </label>
+                            </div>
+                            <!-- Radio 4 -->
+                            <div class="form-check pb-1" title="Good">
+                                <input class="form-check-input" type="radio" name="option1" id="opt1rad4" value="3">
+                                <label class="form-check-label" for="opt1rad4">
+                                    Good
+                                </label>
+                            </div>
+                            <!-- Radio 5 -->
+                            <div class="form-check pb-1" title="Very Good">
+                                <input class="form-check-input" type="radio" name="option1" id="opt1rad5" value="4">
+                                <label class="form-check-label" for="opt1rad5">
+                                    Very Good
+                                </label>
+                            </div>
+                            <!-- Radio 6 -->
+                            <div class="form-check pb-1" title="Excellent">
+                                <input class="form-check-input" type="radio" name="option1" id="opt1rad6" value="5">
+                                <label class="form-check-label" for="opt1rad6">
+                                    Excellent
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 btn-right">
+                            <button type="button" class="btn btn-primary" autofocus title="Next"
+                                onclick="show('q2', 'b1', 'option1'); getFocus('b2')" id="b1">
+                                Next <i class="fas fa-chevron-circle-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Question 2 -->
+        <div class="col-lg-6">
+            <div class="hide" id="q2" title="Question 2">
+                <div class="card-header bg-primary">
+                    <b class="text-light">Q2. How much teacher creates the subject interesting?</b>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <!-- Radio 1 -->
+                            <div class="form-check pb-1" title="Not Satisfactory">
+                                <input class="form-check-input" type="radio" name="option2" id="opt2rad1" value="0">
+                                <label class="form-check-label" for="opt2rad1">
+                                    Not Satisfactory
+                                </label>
+                            </div>
+                            <!-- Radio 2 -->
+                            <div class="form-check pb-1" title="Poor">
+                                <input class="form-check-input" type="radio" name="option2" id="opt2rad2" value="1">
+                                <label class="form-check-label" for="opt2rad2">
+                                    Poor
+                                </label>
+                            </div>
+                            <!-- Radio 3 -->
+                            <div class="form-check pb-1" title="Average">
+                                <input class="form-check-input" type="radio" name="option2" id="opt2rad3" value="2">
+                                <label class="form-check-label" for="opt2rad3">
+                                    Average
+                                </label>
+                            </div>
+                            <!-- Radio 4 -->
+                            <div class="form-check pb-1" title="Good">
+                                <input class="form-check-input" type="radio" name="option2" id="opt2rad4" value="3">
+                                <label class="form-check-label" for="opt2rad4">
+                                    Good
+                                </label>
+                            </div>
+                            <!-- Radio 5 -->
+                            <div class="form-check pb-1" title="Very Good">
+                                <input class="form-check-input" type="radio" name="option2" id="opt2rad5" value="4">
+                                <label class="form-check-label" for="opt2rad5">
+                                    Very Good
+                                </label>
+                            </div>
+                            <!-- Radio 6 -->
+                            <div class="form-check pb-1" title="Excellent">
+                                <input class="form-check-input" type="radio" name="option2" id="opt2rad6" value="5">
+                                <label class="form-check-label" for="opt2rad6">
+                                    Excellent
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 btn-right">
+                            <button type="button" class="btn btn-primary" id="b2" title="Next"
+                                onclick="show('q3', 'b2', 'option2'); getFocus('b3');">
+                                Next <i class="fas fa-chevron-circle-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Question 3 -->
+        <div class="col-lg-6">
+            <div class="hide" id="q3" title="Question 3">
+                <div class="card-header bg-primary">
+                    <b class="text-light">Q3. How regular teacher reports at right time to class?</b>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <!-- Radio 1 -->
+                            <div class="form-check pb-1" title="Not Satisfactory">
+                                <input class="form-check-input" type="radio" name="option3" id="opt3rad1" value="0">
+                                <label class="form-check-label" for="opt3rad1">
+                                    Not Satisfactory
+                                </label>
+                            </div>
+                            <!-- Radio 2 -->
+                            <div class="form-check pb-1" title="Poor">
+                                <input class="form-check-input" type="radio" name="option3" id="opt3rad2" value="1">
+                                <label class="form-check-label" for="opt3rad2">
+                                    Poor
+                                </label>
+                            </div>
+                            <!-- Radio 3 -->
+                            <div class="form-check pb-1" title="Average">
+                                <input class="form-check-input" type="radio" name="option3" id="opt3rad3" value="2">
+                                <label class="form-check-label" for="opt3rad3">
+                                    Average
+                                </label>
+                            </div>
+                            <!-- Radio 4 -->
+                            <div class="form-check pb-1" title="Good">
+                                <input class="form-check-input" type="radio" name="option3" id="opt3rad4" value="3">
+                                <label class="form-check-label" for="opt3rad4">
+                                    Good
+                                </label>
+                            </div>
+                            <!-- Radio 5 -->
+                            <div class="form-check pb-1" title="Very Good">
+                                <input class="form-check-input" type="radio" name="option3" id="opt3rad5" value="4">
+                                <label class="form-check-label" for="opt3rad5">
+                                    Very Good
+                                </label>
+                            </div>
+                            <!-- Radio 6 -->
+                            <div class="form-check pb-1" title="Excellent">
+                                <input class="form-check-input" type="radio" name="option3" id="opt3rad6" value="5">
+                                <label class="form-check-label" for="opt3rad6">
+                                    Excellent
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 btn-right">
+                            <button type="button" class="btn btn-primary" id="b3" title="Next"
+                                onclick="show('q4', 'b3', 'option3'); getFocus('b4');">
+                                Next <i class="fas fa-chevron-circle-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Question 4 -->
+        <div class="col-lg-6">
+            <div class="hide" id="q4" title="Question 4">
+                <div class="card-header bg-primary">
+                    <b class="text-light">Q4. How efficiently lecture time is utilized by the teacher?</b>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <!-- Radio 1 -->
+                            <div class="form-check pb-1" title="Not Satisfactory">
+                                <input class="form-check-input" type="radio" name="option4" id="opt4rad1" value="0">
+                                <label class="form-check-label" for="opt4rad1">
+                                    Not Satisfactory
+                                </label>
+                            </div>
+                            <!-- Radio 2 -->
+                            <div class="form-check pb-1" title="Poor">
+                                <input class="form-check-input" type="radio" name="option4" id="opt4rad2" value="1">
+                                <label class="form-check-label" for="opt4rad2">
+                                    Poor
+                                </label>
+                            </div>
+                            <!-- Radio 3 -->
+                            <div class="form-check pb-1" title="Average">
+                                <input class="form-check-input" type="radio" name="option4" id="opt4rad3" value="2">
+                                <label class="form-check-label" for="opt4rad3">
+                                    Average
+                                </label>
+                            </div>
+                            <!-- Radio 4 -->
+                            <div class="form-check pb-1" title="Good">
+                                <input class="form-check-input" type="radio" name="option4" id="opt4rad4" value="3">
+                                <label class="form-check-label" for="opt4rad4">
+                                    Good
+                                </label>
+                            </div>
+                            <!-- Radio 5 -->
+                            <div class="form-check pb-1" title="Very Good">
+                                <input class="form-check-input" type="radio" name="option4" id="opt4rad5" value="4">
+                                <label class="form-check-label" for="opt4rad5">
+                                    Very Good
+                                </label>
+                            </div>
+                            <!-- Radio 6 -->
+                            <div class="form-check pb-1" title="Excellent">
+                                <input class="form-check-input" type="radio" name="option4" id="opt4rad6" value="5">
+                                <label class="form-check-label" for="opt4rad6">
+                                    Excellent
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 btn-right">
+                            <button type="button" class="btn btn-primary" id="b4" title="Next"
+                                onclick="show('q5', 'b4', 'option4'); getFocus('b5')">
+                                Next <i class="fas fa-chevron-circle-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Question 5 -->
+        <div class="col-lg-6">
+            <div class="hide" id="q5" title="Question 5">
+                <div class="card-header bg-primary">
+                    <b class="text-light"> Q5. How efficiently board writing is readable to last benches?</b>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <!-- Radio 1 -->
+                            <div class="form-check pb-1" title="Not Satisfactory">
+                                <input class="form-check-input" type="radio" name="option5" id="opt5rad1" value="0">
+                                <label class="form-check-label" for="opt5rad1">
+                                    Not Satisfactory
+                                </label>
+                            </div>
+                            <!-- Radio 2 -->
+                            <div class="form-check pb-1" title="Poor">
+                                <input class="form-check-input" type="radio" name="option5" id="opt5rad2" value="1">
+                                <label class="form-check-label" for="opt5rad2">
+                                    Poor
+                                </label>
+                            </div>
+                            <!-- Radio 3 -->
+                            <div class="form-check pb-1" title="Average">
+                                <input class="form-check-input" type="radio" name="option5" id="opt5rad3" value="2">
+                                <label class="form-check-label" for="opt5rad3">
+                                    Average
+                                </label>
+                            </div>
+                            <!-- Radio 4 -->
+                            <div class="form-check pb-1" title="Good">
+                                <input class="form-check-input" type="radio" name="option5" id="opt5rad4" value="3">
+                                <label class="form-check-label" for="opt5rad4">
+                                    Good
+                                </label>
+                            </div>
+                            <!-- Radio 5 -->
+                            <div class="form-check pb-1" title="Very Good">
+                                <input class="form-check-input" type="radio" name="option5" id="opt5rad5" value="4">
+                                <label class="form-check-label" for="opt5rad5">
+                                    Very Good
+                                </label>
+                            </div>
+                            <!-- Radio 6 -->
+                            <div class="form-check pb-1" title="Excellent">
+                                <input class="form-check-input" type="radio" name="option5" id="opt5rad6" value="5">
+                                <label class="form-check-label" for="opt5rad6">
+                                    Excellent
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 btn-right">
+                            <button type="button" class="btn btn-primary" id="b5" title="Next"
+                                onclick="show('q6', 'b5', 'option5'); getFocus('b6')">
+                                Next <i class="fas fa-chevron-circle-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Question 6 -->
+        <div class="col-lg-6">
+            <div class="hide" id="q6" title="Question 6">
+                <div class="card-header bg-primary">
+                    <b class="text-light">Q6. How much efficiently voice of a teacher is clear and understandable?</b>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <!-- Radio 1 -->
+                            <div class="form-check pb-1" title="Not Satisfactory">
+                                <input class="form-check-input" type="radio" name="option6" id="opt6rad1" value="0">
+                                <label class="form-check-label" for="opt6rad1">
+                                    Not Satisfactory
+                                </label>
+                            </div>
+                            <!-- Radio 2 -->
+                            <div class="form-check pb-1" title="Poor">
+                                <input class="form-check-input" type="radio" name="option6" id="opt6rad2" value="1">
+                                <label class="form-check-label" for="opt6rad2">
+                                    Poor
+                                </label>
+                            </div>
+                            <!-- Radio 3 -->
+                            <div class="form-check pb-1" title="Average">
+                                <input class="form-check-input" type="radio" name="option6" id="opt6rad3" value="2">
+                                <label class="form-check-label" for="opt6rad3">
+                                    Average
+                                </label>
+                            </div>
+                            <!-- Radio 4 -->
+                            <div class="form-check pb-1" title="Good">
+                                <input class="form-check-input" type="radio" name="option6" id="opt6rad4" value="3">
+                                <label class="form-check-label" for="opt6rad4">
+                                    Good
+                                </label>
+                            </div>
+                            <!-- Radio 5 -->
+                            <div class="form-check pb-1" title="Very Good">
+                                <input class="form-check-input" type="radio" name="option6" id="opt6rad5" value="4">
+                                <label class="form-check-label" for="opt6rad5">
+                                    Very Good
+                                </label>
+                            </div>
+                            <!-- Radio 6 -->
+                            <div class="form-check pb-1" title="Excellent">
+                                <input class="form-check-input" type="radio" name="option6" id="opt6rad6" value="5">
+                                <label class="form-check-label" for="opt6rad6">
+                                    Excellent
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 btn-right">
+                            <button type="button" class="btn btn-primary" id="b6" title="Next"
+                                onclick="show('q7', 'b6', 'option6'); getFocus('b7')">
+                                Next <i class="fas fa-chevron-circle-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Question 7 -->
+        <div class="col-lg-6">
+            <div class="hide" id="q7" title="Question 7">
+                <div class="card-header bg-primary">
+                    <b class="text-light">Q7. How efficiently practical real-life examples are given to the students?</b>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <!-- Radio 1 -->
+                            <div class="form-check pb-1" title="Not Satisfactory">
+                                <input class="form-check-input" type="radio" name="option7" id="opt7rad1" value="0">
+                                <label class="form-check-label" for="opt7rad1">
+                                    Not Satisfactory
+                                </label>
+                            </div>
+                            <!-- Radio 2 -->
+                            <div class="form-check pb-1" title="Poor">
+                                <input class="form-check-input" type="radio" name="option7" id="opt7rad2" value="1">
+                                <label class="form-check-label" for="opt7rad2">
+                                    Poor
+                                </label>
+                            </div>
+                            <!-- Radio 3 -->
+                            <div class="form-check pb-1" title="Average">
+                                <input class="form-check-input" type="radio" name="option7" id="opt7rad3" value="2">
+                                <label class="form-check-label" for="opt7rad3">
+                                    Average
+                                </label>
+                            </div>
+                            <!-- Radio 4 -->
+                            <div class="form-check pb-1" title="Very Good">
+                                <input class="form-check-input" type="radio" name="option7" id="opt7rad4" value="3">
+                                <label class="form-check-label" for="opt7rad4">
+                                    Good
+                                </label>
+                            </div>
+                            <!-- Radio 5 -->
+                            <div class="form-check pb-1" title="Very Good">
+                                <input class="form-check-input" type="radio" name="option7" id="opt7rad5" value="4">
+                                <label class="form-check-label" for="opt7rad5">
+                                    Very Good
+                                </label>
+                            </div>
+                            <!-- Radio 6 -->
+                            <div class="form-check pb-1" title="Excellent">
+                                <input class="form-check-input" type="radio" name="option7" id="opt7rad6" value="5">
+                                <label class="form-check-label" for="opt7rad6">
+                                    Excellent
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 btn-right">
+                            <button type="button" class="btn btn-primary" id="b7" title="Next"
+                                onclick="show('q8', 'b7', 'option7'); getFocus('b8')">
+                                Next <i class="fas fa-chevron-circle-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Question 8 -->
+        <div class="col-lg-6">
+            <div class="hide" id="q8" title="Question 8">
+                <div class="card-header bg-primary">
+                    <b class="text-light">Q8. How efficient review is made in the previous class by the teacher?</b>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <!-- Radio 1 -->
+                            <div class="form-check pb-1" title="Not Satisfactory">
+                                <input class="form-check-input" type="radio" name="option8" id="opt8rad1" value="0">
+                                <label class="form-check-label" for="opt8rad1">
+                                    Not Satisfactory
+                                </label>
+                            </div>
+                            <!-- Radio 2 -->
+                            <div class="form-check pb-1" title="Poor">
+                                <input class="form-check-input" type="radio" name="option8" id="opt8rad2" value="1">
+                                <label class="form-check-label" for="opt8rad2">
+                                    Poor
+                                </label>
+                            </div>
+                            <!-- Radio 3 -->
+                            <div class="form-check pb-1" title="Average">
+                                <input class="form-check-input" type="radio" name="option8" id="opt8rad3" value="2">
+                                <label class="form-check-label" for="opt8rad3">
+                                    Average
+                                </label>
+                            </div>
+                            <!-- Radio 4 -->
+                            <div class="form-check pb-1" title="Good">
+                                <input class="form-check-input" type="radio" name="option8" id="opt8rad4" value="3">
+                                <label class="form-check-label" for="opt8rad4">
+                                    Good
+                                </label>
+                            </div>
+                            <!-- Radio 5 -->
+                            <div class="form-check pb-1" title="Very Good">
+                                <input class="form-check-input" type="radio" name="option8" id="opt8rad5" value="4">
+                                <label class="form-check-label" for="opt8rad5">
+                                    Very Good
+                                </label>
+                            </div>
+                            <!-- Radio 6 -->
+                            <div class="form-check pb-1" title="Excellent">
+                                <input class="form-check-input" type="radio" name="option8" id="opt8rad6" value="5">
+                                <label class="form-check-label" for="opt8rad6">
+                                    Excellent
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 btn-right">
+                            <button type="button" class="btn btn-primary" id="b8" title="Next"
+                                onclick="show('q9', 'b8', 'option8'); getFocus('b9')">
+                                Next <i class="fas fa-chevron-circle-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Question 9 -->
+        <div class="col-lg-6">
+            <div class="hide" id="q9" title="Question 9">
+                <div class="card-header bg-primary">
+                    <b class="text-light">Q9. How efficiently notes are provided by the teacher?</b>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <!-- Radio 1 -->
+                            <div class="form-check pb-1" title="Not Satisfactory">
+                                <input class="form-check-input" type="radio" name="option9" id="opt9rad1" value="0">
+                                <label class="form-check-label" for="opt9rad1">
+                                    Not Satisfactory
+                                </label>
+                            </div>
+                            <!-- Radio 2 -->
+                            <div class="form-check pb-1" title="Poor">
+                                <input class="form-check-input" type="radio" name="option9" id="opt9rad2" value="1">
+                                <label class="form-check-label" for="opt9rad2">
+                                    Poor
+                                </label>
+                            </div>
+                            <!-- Radio 3 -->
+                            <div class="form-check pb-1" title="Average">
+                                <input class="form-check-input" type="radio" name="option9" id="opt9rad3" value="2">
+                                <label class="form-check-label" for="opt9rad3">
+                                    Average
+                                </label>
+                            </div>
+                            <!-- Radio 4 -->
+                            <div class="form-check pb-1" title="Good">
+                                <input class="form-check-input" type="radio" name="option9" id="opt9rad4" value="3">
+                                <label class="form-check-label" for="opt9rad4">
+                                    Good
+                                </label>
+                            </div>
+                            <!-- Radio 5 -->
+                            <div class="form-check pb-1"  title="Very Good">
+                                <input class="form-check-input" type="radio" name="option9" id="opt9rad5" value="4">
+                                <label class="form-check-label" for="opt9rad5">
+                                    Very Good
+                                </label>
+                            </div>
+                            <!-- Radio 6 -->
+                            <div class="form-check pb-1" title="Excellent">
+                                <input class="form-check-input" type="radio" name="option9" id="opt9rad6" value="5">
+                                <label class="form-check-label" for="opt9rad6">
+                                    Excellent
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 btn-right">
+                            <button type="button" class="btn btn-primary" id="b9" title="Next"
+                                onclick="show('q10', 'b9', 'option9'); getFocus('b10')">
+                                Next <i class="fas fa-chevron-circle-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Question 10 -->
+        <div class="col-lg-6">
+            <div class="hide" id="q10" title="Question 10">
+                <div class="card-header bg-primary">
+                    <b class="text-light">Q10. How easily the teacher is available for clearing doubts of students?</b>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <!-- Radio 1 -->
+                            <div class="form-check pb-1" title="Not Satisfactory">
+                                <input class="form-check-input" type="radio" name="option10" id="opt10rad1" value="0">
+                                <label class="form-check-label" for="opt10rad1">
+                                    Not Satisfactory
+                                </label>
+                            </div>
+                            <!-- Radio 2 -->
+                            <div class="form-check pb-1" title="Poor">
+                                <input class="form-check-input" type="radio" name="option10" id="opt10rad2" value="1">
+                                <label class="form-check-label" for="opt10rad2">
+                                    Poor
+                                </label>
+                            </div>
+                            <!-- Radio 3 -->
+                            <div class="form-check pb-1" title="Average">
+                                <input class="form-check-input" type="radio" name="option10" id="opt10rad3" value="2">
+                                <label class="form-check-label" for="opt10rad3">
+                                    Average
+                                </label>
+                            </div>
+                            <!-- Radio 4 -->
+                            <div class="form-check pb-1" title="Good">
+                                <input class="form-check-input" type="radio" name="option10" id="opt10rad4" value="3">
+                                <label class="form-check-label" for="opt10rad4">
+                                    Good
+                                </label>
+                            </div>
+                            <!-- Radio 5 -->
+                            <div class="form-check pb-1" title="Very Good">
+                                <input class="form-check-input" type="radio" name="option10" id="opt10rad5" value="4">
+                                <label class="form-check-label" for="opt10rad5">
+                                    Very Good
+                                </label>
+                            </div>
+                            <!-- Radio 6 -->
+                            <div class="form-check pb-1" title="Excellent">
+                                <input class="form-check-input" type="radio" name="option10" id="opt10rad6" value="5">
+                                <label class="form-check-label" for="opt10rad6">
+                                    Excellent
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 btn-right">
+                            <button type="button" class="btn btn-primary" id="b10" title="Next"
+                                onclick="show('q11', 'b10', 'option10'); getFocus('b11')">
+                                Next <i class="fas fa-chevron-circle-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Question 11 -->
+        <div class="col-lg-6">
+            <div class="hide" id="q11" title="Question 11">
+                <div class="card-header bg-primary">
+                    <b class="text-light">Q11. How efficient student's doubts address Satisfactorily?</b>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <!-- Radio 1 -->
+                            <div class="form-check pb-1" title="Not Satisfactory">
+                                <input class="form-check-input" type="radio" name="option11" id="opt11rad1" value="0">
+                                <label class="form-check-label" for="opt11rad1">
+                                    Not Satisfactory
+                                </label>
+                            </div>
+                            <!-- Radio 2 -->
+                            <div class="form-check pb-1" title="Poor">
+                                <input class="form-check-input" type="radio" name="option11" id="opt11rad2" value="1">
+                                <label class="form-check-label" for="opt11rad2">
+                                    Poor
+                                </label>
+                            </div>
+                            <!-- Radio 3 -->
+                            <div class="form-check pb-1" title="Average">
+                                <input class="form-check-input" type="radio" name="option11" id="opt11rad3" value="2">
+                                <label class="form-check-label" for="opt11rad3">
+                                    Average
+                                </label>
+                            </div>
+                            <!-- Radio 4 -->
+                            <div class="form-check pb-1" title="Good">
+                                <input class="form-check-input" type="radio" name="option11" id="opt11rad4" value="3">
+                                <label class="form-check-label" for="opt11rad4">
+                                    Good
+                                </label>
+                            </div>
+                            <!-- Radio 5 -->
+                            <div class="form-check pb-1" title="Very Good">
+                                <input class="form-check-input" type="radio" name="option11" id="opt11rad5" value="4">
+                                <label class="form-check-label" for="opt11rad5">
+                                    Very Good
+                                </label>
+                            </div>
+                            <!-- Radio 6 -->
+                            <div class="form-check pb-1" title="Excellent">
+                                <input class="form-check-input" type="radio" name="option11" id="opt11rad6" value="5">
+                                <label class="form-check-label" for="opt11rad6">
+                                    Excellent
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 btn-right">
+                            <button type="button" class="btn btn-primary" id="b11" title="Next"
+                                onclick="show('q12', 'b11', 'option11'); getFocus('b12')">
+                                Next <i class="fas fa-chevron-circle-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Question 12 -->
+        <div class="col-lg-6">
+            <div class="hide" id="q12" title="Question 12">
+                <div class="card-header bg-primary">
+                    <b class="text-light">Q12. What is the overall impression of the teacher from your perspective?</b>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <!-- Radio 1 -->
+                            <div class="form-check pb-1" title="Not Satisfactory">
+                                <input class="form-check-input" type="radio" name="option12" id="opt12rad1" value="0">
+                                <label class="form-check-label" for="opt12rad1">
+                                    Not Satisfactory
+                                </label>
+                            </div>
+                            <!-- Radio 2 -->
+                            <div class="form-check pb-1" title="Poor">
+                                <input class="form-check-input" type="radio" name="option12" id="opt12rad2" value="1">
+                                <label class="form-check-label" for="opt12rad2">
+                                    Poor
+                                </label>
+                            </div>
+                            <!-- Radio 3 -->
+                            <div class="form-check pb-1" title="Average">
+                                <input class="form-check-input" type="radio" name="option12" id="opt12rad3" value="2">
+                                <label class="form-check-label" for="opt12rad3">
+                                    Average
+                                </label>
+                            </div>
+                            <!-- Radio 4 -->
+                            <div class="form-check pb-1" title="Good">
+                                <input class="form-check-input" type="radio" name="option12" id="opt12rad4" value="3">
+                                <label class="form-check-label" for="opt12rad4">
+                                    Good
+                                </label>
+                            </div>
+                            <!-- Radio 5 -->
+                            <div class="form-check pb-1" title="Very Good">
+                                <input class="form-check-input" type="radio" name="option12" id="opt12rad5" value="4">
+                                <label class="form-check-label" for="opt12rad5">
+                                    Very Good
+                                </label>
+                            </div>
+                            <!-- Radio 6 -->
+                            <div class="form-check pb-1" title="Excellent">
+                                <input class="form-check-input" type="radio" name="option12" id="opt12rad6" value="5">
+                                <label class="form-check-label" for="opt12rad6">
+                                    Excellent
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 btn-right">
+                            <button type="button" class="btn btn-primary" id="b12" title="Next"
+                                onclick="show('submit', 'b12', 'option12'); getFocus('submitButton')">
+                                Next <i class="fas fa-chevron-circle-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Submit Button -->
+    <div class="row hide" id="submit">
+        <p>Suggestions/Grievance if any:</p>
+        <textarea rows="5" cols="5" class="form-control" name="suggestions" id="suggestions" title="Suggestions"></textarea>
+        <button type="submit" class="btn btn-primary btn-block text-center mt-4" id="submitButton" title="Submit">
+            Submit
+        </button>
+    </div>
+</form>
+{% else %}
+<form action="/student/feedback/{{ subject.0.teacher.id }}/{{ subject.0.id }}"
+ method="POST" onsubmit="return validatePractical();">
+    {% csrf_token %}
+    <div class="row">
+        <!-- Question 1 -->
+        <div class="col-lg-6">
+            <div class="card mt-4 mb-3 slide" id="q1" title="Question 1" name="q1">
+                <div class="card-header bg-primary">
+                    <b class="text-light">Q1. How much you are satisfied with the connections between practical work in practical classes really happen?</b>
+                </div>
+                <div class="card-body custom-control custom-radio">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <!-- Radio 1 -->
+                            <div class="form-check pb-1" title="Not Satisfactory">
+                                <input class="form-check-input" type="radio" name="option1" id="opt1rad1" value="0">
+                                <label class="form-check-label" for="opt1rad1">
+                                    Not Satisfactory
+                                </label>
+                            </div>
+                            <!-- Radio 2 -->
+                            <div class="form-check pb-1" title="Poor">
+                                <input class="form-check-input" type="radio" name="option1" id="opt1rad2" value="1">
+                                <label class="form-check-label" for="opt1rad2">
+                                    Poor
+                                </label>
+                            </div>
+                            <!-- Radio 3 -->
+                            <div class="form-check pb-1" title="Average">
+                                <input class="form-check-input" type="radio" name="option1" id="opt1rad3" value="2">
+                                <label class="form-check-label" for="opt1rad3">
+                                    Average
+                                </label>
+                            </div>
+                            <!-- Radio 4 -->
+                            <div class="form-check pb-1" title="Good">
+                                <input class="form-check-input" type="radio" name="option1" id="opt1rad4" value="3">
+                                <label class="form-check-label" for="opt1rad4">
+                                    Good
+                                </label>
+                            </div>
+                            <!-- Radio 5 -->
+                            <div class="form-check pb-1" title="Very Good">
+                                <input class="form-check-input" type="radio" name="option1" id="opt1rad5" value="4">
+                                <label class="form-check-label" for="opt1rad5">
+                                    Very Good
+                                </label>
+                            </div>
+                            <!-- Radio 6 -->
+                            <div class="form-check pb-1" title="Excellent">
+                                <input class="form-check-input" type="radio" name="option1" id="opt1rad6" value="5">
+                                <label class="form-check-label" for="opt1rad6">
+                                    Excellent
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 btn-right">
+                            <button type="button" class="btn btn-primary" autofocus title="Next"
+                                onclick="show('q2', 'b1', 'option1'); getFocus('b2')" id="b1">
+                                Next <i class="fas fa-chevron-circle-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Question 2 -->
+        <div class="col-lg-6">
+            <div class="hide" id="q2" title="Question 2"name="q2">
+                <div class="card-header bg-primary">
+                    <b class="text-light">Q2. How approachable is the teacher in practical classes?</b>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <!-- Radio 1 -->
+                            <div class="form-check pb-1" title="Not Satisfactory">
+                                <input class="form-check-input" type="radio" name="option2" id="opt2rad1" value="0">
+                                <label class="form-check-label" for="opt2rad1">
+                                    Not Satisfactory
+                                </label>
+                            </div>
+                            <!-- Radio 2 -->
+                            <div class="form-check pb-1" title="Poor">
+                                <input class="form-check-input" type="radio" name="option2" id="opt2rad2" value="1">
+                                <label class="form-check-label" for="opt2rad2">
+                                    Poor
+                                </label>
+                            </div>
+                            <!-- Radio 3 -->
+                            <div class="form-check pb-1" title="Average">
+                                <input class="form-check-input" type="radio" name="option2" id="opt2rad3" value="2">
+                                <label class="form-check-label" for="opt2rad3">
+                                    Average
+                                </label>
+                            </div>
+                            <!-- Radio 4 -->
+                            <div class="form-check pb-1" title="Good">
+                                <input class="form-check-input" type="radio" name="option2" id="opt2rad4" value="3">
+                                <label class="form-check-label" for="opt2rad4">
+                                    Good
+                                </label>
+                            </div>
+                            <!-- Radio 5 -->
+                            <div class="form-check pb-1" title="Very Good">
+                                <input class="form-check-input" type="radio" name="option2" id="opt2rad5" value="4">
+                                <label class="form-check-label" for="opt2rad5">
+                                    Very Good
+                                </label>
+                            </div>
+                            <!-- Radio 6 -->
+                            <div class="form-check pb-1" title="Excellent">
+                                <input class="form-check-input" type="radio" name="option2" id="opt2rad6" value="5">
+                                <label class="form-check-label" for="opt2rad6">
+                                    Excellent
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 btn-right">
+                            <button type="button" class="btn btn-primary" id="b2" title="Next"
+                                onclick="show('q3', 'b2', 'option2'); getFocus('b3');">
+                                Next <i class="fas fa-chevron-circle-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Question 3 -->
+        <div class="col-lg-6">
+            <div class="hide" id="q3" title="Average">
+                <div class="card-header bg-primary">
+                    <b class="text-light">Q3. How successful is the teacher in responding to the questions and queries promptly and effectively?</b>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <!-- Radio 1 -->
+                            <div class="form-check pb-1" title="Not Satisfactory">
+                                <input class="form-check-input" type="radio" name="option3" id="opt3rad1" value="0">
+                                <label class="form-check-label" for="opt3rad1">
+                                    Not Satisfactory
+                                </label>
+                            </div>
+                            <!-- Radio 2 -->
+                            <div class="form-check pb-1" title="Poor">
+                                <input class="form-check-input" type="radio" name="option3" id="opt3rad2" value="1">
+                                <label class="form-check-label" for="opt3rad2">
+                                    Poor
+                                </label>
+                            </div>
+                            <!-- Radio 3 -->
+                            <div class="form-check pb-1" title="Average">
+                                <input class="form-check-input" type="radio" name="option3" id="opt3rad3" value="2">
+                                <label class="form-check-label" for="opt3rad3">
+                                    Average
+                                </label>
+                            </div>
+                            <!-- Radio 4 -->
+                            <div class="form-check pb-1" title="Good">
+                                <input class="form-check-input" type="radio" name="option3" id="opt3rad4" value="3">
+                                <label class="form-check-label" for="opt3rad4">
+                                    Good
+                                </label>
+                            </div>
+                            <!-- Radio 5 -->
+                            <div class="form-check pb-1" title="Very Good">
+                                <input class="form-check-input" type="radio" name="option3" id="opt3rad5" value="4">
+                                <label class="form-check-label" for="opt3rad5">
+                                    Very Good
+                                </label>
+                            </div>
+                            <!-- Radio 6 -->
+                            <div class="form-check pb-1" title="Excellent">
+                                <input class="form-check-input" type="radio" name="option3" id="opt3rad6" value="5">
+                                <label class="form-check-label" for="opt3rad6">
+                                    Excellent
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 btn-right">
+                            <button type="button" class="btn btn-primary" id="b3" title="Next"
+                                onclick="show('q4', 'b3', 'option3'); getFocus('b4');">
+                                Next <i class="fas fa-chevron-circle-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Question 4 -->
+        <div class="col-lg-6">
+            <div class="hide" id="q4" title="Question 4">
+                <div class="card-header bg-primary">
+                    <b class="text-light">Q4. How effective is the teacher in evaluating the practical work?</b>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <!-- Radio 1 -->
+                            <div class="form-check pb-1" title="Not Satisfactory">
+                                <input class="form-check-input" type="radio" name="option4" id="opt4rad1" value="0">
+                                <label class="form-check-label" for="opt4rad1">
+                                    Not Satisfactory
+                                </label>
+                            </div>
+                            <!-- Radio 2 -->
+                            <div class="form-check pb-1" title="Poor">
+                                <input class="form-check-input" type="radio" name="option4" id="opt4rad2" value="1">
+                                <label class="form-check-label" for="opt4rad2">
+                                    Poor
+                                </label>
+                            </div>
+                            <!-- Radio 3 -->
+                            <div class="form-check pb-1" title="Average">
+                                <input class="form-check-input" type="radio" name="option4" id="opt4rad3" value="2">
+                                <label class="form-check-label" for="opt4rad3">
+                                    Average
+                                </label>
+                            </div>
+                            <!-- Radio 4 -->
+                            <div class="form-check pb-1" title="Good">
+                                <input class="form-check-input" type="radio" name="option4" id="opt4rad4" value="3">
+                                <label class="form-check-label" for="opt4rad4">
+                                    Good
+                                </label>
+                            </div>
+                            <!-- Radio 5 -->
+                            <div class="form-check pb-1" title="Very Good">
+                                <input class="form-check-input" type="radio" name="option4" id="opt4rad5" value="4">
+                                <label class="form-check-label" for="opt4rad5">
+                                    Very Good
+                                </label>
+                            </div>
+                            <!-- Radio 6 -->
+                            <div class="form-check pb-1" title="Excellent">
+                                <input class="form-check-input" type="radio" name="option4" id="opt4rad6" value="5">
+                                <label class="form-check-label" for="opt4rad6">
+                                    Excellent
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 btn-right">
+                            <button type="button" class="btn btn-primary" id="b4" title="Next"
+                                onclick="show('q5', 'b4', 'option4'); getFocus('b5')">
+                                Next <i class="fas fa-chevron-circle-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Question 5 -->
+        <div class="col-lg-6">
+            <div class="hide" id="q5" title="Question 5">
+                <div class="card-header bg-primary">
+                    <b class="text-light"> Q5. How many practicals run smoothly according to the university syllabus?</b>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <!-- Radio 1 -->
+                            <div class="form-check pb-1" title="Not Satisfactory">
+                                <input class="form-check-input" type="radio" name="option5" id="opt5rad1" value="0">
+                                <label class="form-check-label" for="opt5rad1">
+                                    Not Satisfactory
+                                </label>
+                            </div>
+                            <!-- Radio 2 -->
+                            <div class="form-check pb-1" title="Poor">
+                                <input class="form-check-input" type="radio" name="option5" id="opt5rad2" value="1">
+                                <label class="form-check-label" for="opt5rad2">
+                                    Poor
+                                </label>
+                            </div>
+                            <!-- Radio 3 -->
+                            <div class="form-check pb-1" title="Average">
+                                <input class="form-check-input" type="radio" name="option5" id="opt5rad3" value="2">
+                                <label class="form-check-label" for="opt5rad3">
+                                    Average
+                                </label>
+                            </div>
+                            <!-- Radio 4 -->
+                            <div class="form-check pb-1" title="Good">
+                                <input class="form-check-input" type="radio" name="option5" id="opt5rad4" value="3">
+                                <label class="form-check-label" for="opt5rad4">
+                                    Good
+                                </label>
+                            </div>
+                            <!-- Radio 5 -->
+                            <div class="form-check pb-1" title="Very Good">
+                                <input class="form-check-input" type="radio" name="option5" id="opt5rad5" value="4">
+                                <label class="form-check-label" for="opt5rad5">
+                                    Very Good
+                                </label>
+                            </div>
+                            <!-- Radio 6 -->
+                            <div class="form-check pb-1" title="Excellent">
+                                <input class="form-check-input" type="radio" name="option5" id="opt5rad6" value="5">
+                                <label class="form-check-label" for="opt5rad6">
+                                    Excellent
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 btn-right">
+                            <button type="button" class="btn btn-primary" id="b5" title="Next"
+                                onclick="show('q6', 'b5', 'option5'); getFocus('b6')">
+                                Next <i class="fas fa-chevron-circle-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Question 6 -->
+        <div class="col-lg-6">
+            <div class="hide" id="q6" title="Question 6">
+                <div class="card-header bg-primary">
+                    <b class="text-light">Q6. How well does the teacher succeed in stimulating and sustaining student's interest in practical work?</b>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <!-- Radio 1 -->
+                            <div class="form-check pb-1" title="Not Satisfactory">
+                                <input class="form-check-input" type="radio" name="option6" id="opt6rad1" value="0">
+                                <label class="form-check-label" for="opt6rad1">
+                                    Not Satisfactory
+                                </label>
+                            </div>
+                            <!-- Radio 2 -->
+                            <div class="form-check pb-1" title="Poor">
+                                <input class="form-check-input" type="radio" name="option6" id="opt6rad2" value="1">
+                                <label class="form-check-label" for="opt6rad2">
+                                    Poor
+                                </label>
+                            </div>
+                            <!-- Radio 3 -->
+                            <div class="form-check pb-1" title="Average">
+                                <input class="form-check-input" type="radio" name="option6" id="opt6rad3" value="2">
+                                <label class="form-check-label" for="opt6rad3">
+                                    Average
+                                </label>
+                            </div>
+                            <!-- Radio 4 -->
+                            <div class="form-check pb-1" title="Good">
+                                <input class="form-check-input" type="radio" name="option6" id="opt6rad4" value="3">
+                                <label class="form-check-label" for="opt6rad4">
+                                    Good
+                                </label>
+                            </div>
+                            <!-- Radio 5 -->
+                            <div class="form-check pb-1" title="Very Good">
+                                <input class="form-check-input" type="radio" name="option6" id="opt6rad5" value="4">
+                                <label class="form-check-label" for="opt6rad5">
+                                    Very Good
+                                </label>
+                            </div>
+                            <!-- Radio 6 -->
+                            <div class="form-check pb-1" title="Excellent">
+                                <input class="form-check-input" type="radio" name="option6" id="opt6rad6" value="5">
+                                <label class="form-check-label" for="opt6rad6">
+                                    Excellent
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 btn-right">
+                            <button type="button" class="btn btn-primary" id="b6" title="Next"
+                                onclick="show('q7', 'b6', 'option6'); getFocus('b7')">
+                                Next <i class="fas fa-chevron-circle-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Question 7 -->
+        <div class="col-lg-6">
+            <div class="hide" id="q7" title="Question 7">
+                <div class="card-header bg-primary">
+                    <b class="text-light">Q7. Overall, how you are satisfied with the conduct of practicals?</b>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <!-- Radio 1 -->
+                            <div class="form-check pb-1" title="Not Satisfactory">
+                                <input class="form-check-input" type="radio" name="option7" id="opt7rad1" value="0">
+                                <label class="form-check-label" for="opt7rad1">
+                                    Not Satisfactory
+                                </label>
+                            </div>
+                            <!-- Radio 2 -->
+                            <div class="form-check pb-1" title="Poor">
+                                <input class="form-check-input" type="radio" name="option7" id="opt7rad2" value="1">
+                                <label class="form-check-label" for="opt7rad2">
+                                    Poor
+                                </label>
+                            </div>
+                            <!-- Radio 3 -->
+                            <div class="form-check pb-1" title="Average">
+                                <input class="form-check-input" type="radio" name="option7" id="opt7rad3" value="2">
+                                <label class="form-check-label" for="opt7rad3">
+                                    Average
+                                </label>
+                            </div>
+                            <!-- Radio 4 -->
+                            <div class="form-check pb-1" title="Good">
+                                <input class="form-check-input" type="radio" name="option7" id="opt7rad4" value="3">
+                                <label class="form-check-label" for="opt7rad4">
+                                    Good
+                                </label>
+                            </div>
+                            <!-- Radio 5 -->
+                            <div class="form-check pb-1" title="Very Good">
+                                <input class="form-check-input" type="radio" name="option7" id="opt7rad5" value="4">
+                                <label class="form-check-label" for="opt7rad5">
+                                    Very Good
+                                </label>
+                            </div>
+                            <!-- Radio 6 -->
+                            <div class="form-check pb-1" title="Excellent">
+                                <input class="form-check-input" type="radio" name="option7" id="opt7rad6" value="5">
+                                <label class="form-check-label" for="opt7rad6">
+                                    Excellent
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 btn-right">
+                            <button type="button" class="btn btn-primary" id="b7" title="Next"
+                                onclick="show('submit', 'b7', 'option7'); getFocus('submitButton')">
+                                Next <i class="fas fa-chevron-circle-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Submit Button -->
+    <div class="row hide" id="submit">
+        <p>Suggestions/Grievance if any:</p>
+        <textarea rows="5" class="form-control" name="suggestions" id="suggestions" title="Suggestions"></textarea>
+        <button type="submit" class="btn btn-primary btn-block text-center mt-4" id="submitButton" title="Submit">
+            Submit
+        </button>
+    </div>
+</form>
+{% endif %}
+{% endblock %}

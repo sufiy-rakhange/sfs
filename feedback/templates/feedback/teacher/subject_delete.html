@@ -1,0 +1,66 @@
+{% extends "feedback/teacher/base_teacher.html" %}
+
+{% block title %}Delete Confirmation{% endblock %}
+
+<!--Change Password -->
+{% block pass %}
+    <a href="{% url 'password_change' %}" class="dropdown-item" title="Change password">
+        Change Password <span><i class="fas fa-key"></i></span>
+    </a>
+    <div class="dropdown-divider"></div>
+{% endblock %}
+
+{% block subjectbody %}
+<div class="row pt-4">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8">
+        <form action="{% url 'subject_deletion' %} " method="POST" class="detail-form details">
+            {% csrf_token %}
+            <input type="hidden" value="{{ subject.id }}" name="id">
+            <div class="form-group form-row">
+                <label for="teacherName">
+                    Teacher Name:
+                </label>
+                <input type="text" value="{{ subject.teacher.user.first_name }} {{ subject.teacher.user.last_name }}"
+                    name="teacherName" id="teacherName" disabled>
+            </div>
+            <div class="form-group form-row">
+                <label for="subjectName">
+                    Subject Name:
+                </label>
+                <input type="text" value="{{ subject.subject_name }}" name="subjectName" id="subjectName" disabled>
+            </div>
+            <div class="form-group form-row">
+                <label for="practical">
+                    Subject Type:
+                </label>
+                {% if subject.practical %}
+                    <input type="text" value="Practical" name="practical" id="practical" disabled>
+                {% else %}
+                    <input type="text" value="Thoretical" name="practical" id="practical" disabled>
+                {% endif %}
+            </div>
+            <div class="form-group form-row">
+                <label for="semester">
+                    Semester:
+                </label>
+                <input type="text" value="{{ subject.semester }}" name="semester" id="semester" disabled>
+            </div>
+            <div class="row pt-4">
+                <div class="col-lg-4"></div>
+                <div class="col-lg-2">
+                    <button type="submit" class="btn btn-block btn-danger">
+                        Delete <i class="fas fa-minus-circle"></i>
+                    </button>
+                </div>
+                <div class="col-lg-1"></div>
+                <div class="col-lg-3">
+                    <a href="/teacher/add/subject" class="btn btn-block btn-info">
+                        Go Back <i class="fas fa-reply"></i>
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

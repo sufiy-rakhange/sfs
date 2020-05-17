@@ -1,0 +1,227 @@
+{% extends "feedback/admin/base_admin.html" %}
+
+{% block title %}Index{% endblock %}
+<!-- adm1n123 -->
+{% block pass %}
+<!--Change Password -->
+<a href="{% url 'password_change' %}" class="dropdown-item" title="Change password">
+    Change Password <span><i class="fas fa-key"></i></span>
+</a>
+<div class="dropdown-divider"></div>
+{% endblock %}
+
+{% block index %}
+<div class="col-lg-2 pr-0 pt-4 menu">
+    <ul class="nav nav-pills nav-fill flex-column">
+        <li class="nav-item">
+            <a class="nav-link br-0 active" href="/admin"
+                title="Add Student">
+                Add Student
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link br-0" href="{% url 'student_list' %}"
+                title="Student Details">
+                Student Details
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link br-0" href="{% url 'teacher_list' %}"
+                title="Teacher Details">
+                Teacher Details
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link br-0" href="{% url 'moderate' %}"
+                title="Moderate">
+                Moderate Teachers <span class="badge badge-primary badge-lg">{{ length }}</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="col-lg-10 pt-5">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="row mt-4 mb-5">
+                <div class="col-lg-3"></div>
+                <div class="col-lg-6">
+                    <div class="alert alert-primary alert-dismissible fade show" id="popup">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <strong>{{ message }}</strong>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <div class="tab-content">
+        <!-- Add Student -->
+        <div id="add_student" class="tab-pane container active">
+            <form action="{% url 'student_upload' %}" method="POST" enctype="multipart/form-data"
+            onsubmit="loadingbar();" class="form-horizontal">
+                {% csrf_token %}
+                <div class="row mt-4">
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-8">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-12 custom-file">
+                                    {{ form.csv_file }}
+                                    <label class="custom-file-label" for="csv_file">Choose a CSV File..</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-5"></div>
+                    <div class="col-lg-2">
+                        <button class="btn btn-primary btn-block">
+                            Upload <i class="fas fa-upload"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <!-- Instructions -->
+            <div class="row">
+                <div class="col-lg-1"></div>
+                <div class="col-lg-11">
+                    <h4 class="mt-5">Following instructions must be followed while uploading the file, such as:</h4>
+                    <ul class="mt-4">
+                        <li>Uploaded file must be only CSV file(.csv). No other file formats are accepted.</li>
+                        <li>The file must contain following columns :</li>
+                        <table class="table table-striped table-bordered mt-4">
+                            <thead class="table table-primary">
+                                <tr>
+                                    <th class="text-center">Registration Number</th>
+                                    <th class="text-center">DOB</th>
+                                    <th class="text-center">First Name</th>
+                                    <th class="text-center">Last Name</th>
+                                    <th class="text-center">Email</th>
+                                    <th class="text-center">Batch</th>
+                                    <th class="text-center">Semester</th>
+                                    <th class="text-center">Attendance</th>
+                                    <th class="text-center">Department</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <button type="button" class="btn btn-link btn-block" id="button" onclick="list('list', 'button');">
+                                    More Details <i class="fas fa-caret-down"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <ol class="hide" id="list">
+                            <li>Registration Number</li>
+                            <ul>
+                                <li>The number of students got while registration to the university.</li>
+                                <li>Also, this number will act as a student username.</li>
+                                <li>It should be unique to each user.</li>
+                                <li>This field must contain at least 3 characters.</li>
+                            </ul>
+                            <li>DOB</li>
+                            <ul>
+                                <li>It is a short form of Date Of Birth.</li>
+                                <li>This will act as a password for the respective user.</li>
+                                <li>Also, case sensitive so should be added properly.</li>
+                                <li>This field must contain at least 8 characters.</li>
+                            </ul>
+                            <li>Email</li>
+                            <ul>
+                                <li>Working email should be added as there will be mail sent after completion of feedback.</li>
+                            </ul>
+                            <li>Batch</li>
+                            <ul>
+                                <li>The Batch of a student will the batch allocated to him/her for practicals.</li>
+                                <li>Also, batches will only contain values as:</li>
+                                <ol>
+                                    <li>b1</li>
+                                    <li>b2</li>
+                                    <li>b3</li>
+                                    <li>b4</li>
+                                </ol>
+                            </ul>
+                            <li>Attendance</li>
+                            <ul>
+                                <li>This field contains a limit between 0 to 100. Any value out of the range will not be allowed.</li>
+                                <li>This field differentiates students as regular or defaulter students.</li>
+                                <li>Regular students are those whose Attendance is at least 75% and vice versa.</li>
+                            </ul>
+                            <li>Semester</li>
+                            <ul>
+                                <li>This field contains a limit between 1 to 8. Any value out of the range will not be allowed.</li>
+                            </ul>
+                            <li>Department</li>
+                            <ul>
+                                <li>This field should contain the following values:</li>
+                                <ol>
+                                    <li>First Year Engineering</li>
+                                    <li>Chemical Engineering</li>
+                                    <li>Civil Engineering</li>
+                                    <li>Computer Engineering</li>
+                                    <li>ExTC Engineering</li>
+                                    <li>Mechanical Engineering</li>
+                                </ol>
+                                <li>Any department other than above included will not be accepted.</li>
+                            </ul>
+                            <div class="row">
+                                <div class="col-lg-2">
+                                    <button type="button" class="btn btn-link btn-block" id="btn" onclick="less('button', 'list');">
+                                        Show Less <i class="fas fa-sort-up"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </ol>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Modal -->
+            <div class="modal" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Trying to import data<br>Please Wait...</h5>
+                        </div>
+                        <div class="modal-body mb-3 pb-4">
+                            <div id="loading">
+                                <div class="impress"></div>
+                                <div class="container">
+                                    <ul>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- JQuery for displaying file name after choosing it -->
+            <script>
+                $(".custom-file-input").on("change", function () {
+                    var fileName = $(this).val().split("\\").pop();
+                    $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+                });
+            </script>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,596 @@
+{% extends "feedback/admin/base_admin.html" %}
+
+{% block title %}Teacher List{% endblock %}
+
+{% block pass %}
+<!--Change Password -->
+<a href="{% url 'password_change' %}" class="dropdown-item" title="Change password">
+    Change Password <span><i class="fas fa-key"></i></span>
+</a>
+<div class="dropdown-divider"></div>
+{% endblock %}
+
+{% block index %}
+<div class="col-lg-2 pr-0 pt-4 menu">
+    <ul class="nav nav-pills nav-fill flex-column">
+        <li class="nav-item"><a class="nav-link br-0" href="/admin"
+                title="Add Student">
+                Add Student
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link br-0" href="{% url 'student_list' %}"
+                title="Student Details">
+                Student Details
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active br-0" href="{% url 'teacher_list' %}"
+                title="Teacher Details">
+                Teacher Details
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link br-0" href="{% url 'moderate' %}"
+                title="Moderate">
+                Moderate Teachers <span class="badge badge-primary badge-lg">{{ length }}</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="col-lg-1"></div>
+<div class="col-lg-8 pt-5">
+    <div class="row">
+        <div class="col-lg-12">
+            <ul class="nav nav-pills nav-fill nav-justified">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="pill" href="#t_fy"
+                        title="First Year Department">
+                        First Year
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="pill" href="#t_chemical"
+                        title="Chemical Department">
+                        Chemical
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="pill" href="#t_civil"
+                        title="Civil Department">
+                        Civil
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="pill" href="#t_computer"
+                        title="Computer Department">
+                        Computer
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="pill" href="#t_extc"
+                        title="ExTc Department">
+                        ExTc
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="pill" href="#t_mechanical"
+                        title="Mechanical Department">
+                        Mechanical
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="row mt-4 mb-5">
+                <div class="col-lg-3"></div>
+                <div class="col-lg-6">
+                    <div class="alert alert-primary alert-dismissible fade show" id="popup">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <strong>{{ message }}</strong>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <div class="col-lg-12 p-0">
+        <div class="tab-content">
+        <!-- First Year -->
+            <div id="t_fy" class="tab-pane active">
+                {% if teachers %}
+                <div class="input-group mt-5">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text search">
+                            <i class="fas fa-search"></i>
+                        </span>
+                    </div>
+                    <input class="form-control"
+                        onkeyup="Search('t_fyInput', 't_fyBody', 't_fyTable', 't_fyError')" type="text"
+                        placeholder="Search by First Name or Last Name" aria-label="Search" title="Search"
+                        name="searchQuery" id="t_fyInput">
+                </div>
+                <!-- Displaying Error for Search -->
+                <div class="card error mt-5 mb-5" style="display: none;" id="t_fyError">
+                    <h1 class="text-center">No Such Data Found...</h1>
+                </div>
+                <table class="table table-striped table-bordered mt-4" id="t_fyTable">
+                    <thead class="table table-primary">
+                        <tr>
+                            <th class="text-center">Username</th>
+                            <th class="text-center">First Name</th>
+                            <th class="text-center">Last Name</th>
+                            <th class="text-center">Email</th>
+                            <th class="text-center">Department</th>
+                            <th class="text-center">Edit</th>
+                            <th class="text-center">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody id="t_fyBody">
+                        {% for teacher in teachers %}
+                        <tr>
+                            <td class="text-center">{{ teacher.user.username }}</td>
+                            <td class="text-center">{{ teacher.user.first_name }}</td>
+                            <td class="text-center">{{ teacher.user.last_name }}</td>
+                            <td class="text-center">{{ teacher.user.email }}</td>
+                            <td class="text-center">{{ teacher.department }}</td>
+                            <td>
+                                <a href="/admin/teacher/details/{{ teacher.id }}" class="btn btn-primary btn-block">
+                                    Edit <i class="fas fa-edit"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/admin/teacher/delete/{{ teacher.id }}" class="btn btn-danger btn-block">
+                                    Delete <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <!-- Pagination -->
+                <div class="alert alert-light page">
+                    <span class="step-links">
+                        {% if teachers.has_previous %}
+                        <a href="?page1=1&page2={{page2}}&page3={{page3}}&page4={{page4}}&page5={{page5}}&page6={{page6}}">&laquo; first</a>
+                        <a href="?page1={{ teachers.previous_page_number }}&page2={{page2}}&page3={{page3}}&page4={{page4}}&page5={{page5}}&page6={{page6}}">previous</a>
+                        {% endif %}
+                        <span class="current">
+                            Page {{ teachers.number }} of {{ teachers.paginator.num_pages }}
+                        </span>
+                        {% if teachers.has_next %}
+                        <a href="?page1={{ teachers.next_page_number }}&page2={{page2}}&page3={{page3}}&page4={{page4}}&page5={{page5}}&page6={{page6}}">next</a>
+                        <a href="?page1={{ teachers.paginator.num_pages }}&page2={{page2}}&page3={{page3}}&page4={{page4}}&page5={{page5}}&page6={{page6}}">last &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
+                {% else %}
+                <!-- Displaying Error for no teacher entry in department -->
+                <div class="row top100">
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-6">
+                        <div class="card error">
+                            <h1 class="text-center">No Data Found of First Year Department</h1>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            <!-- Chemical -->
+            <div id="t_chemical" class="tab-pane">
+                {% if t_chemicals %}
+                <div class="input-group mt-5">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text search">
+                            <i class="fas fa-search"></i>
+                        </span>
+                    </div>
+                    <input class="form-control"
+                        onkeyup="Search('t_chInput', 't_chBody', 't_chTable', 't_chError')" type="text"
+                        placeholder="Search by First Name or Last Name" aria-label="Search" title="Search"
+                        name="searchQuery" id="t_chInput">
+                </div>
+                <!-- Displaying Error for Search -->
+                <div class="card error mt-5 mb-5" style="display: none;" id="t_chError">
+                    <h1 class="text-center">No Such Data Found...</h1>
+                </div>
+                <table class="table table-striped table-bordered mt-4" id="t_chTable">
+                    <thead class="table table-primary">
+                        <tr>
+                            <th class="text-center">Username</th>
+                            <th class="text-center">First Name</th>
+                            <th class="text-center">Last Name</th>
+                            <th class="text-center">Email</th>
+                            <th class="text-center">Department</th>
+                            <th class="text-center">Edit</th>
+                            <th class="text-center">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody id="t_chBody">
+                        {% for chemical in t_chemicals %}
+                        <tr>
+                            <td class="text-center">{{ chemical.user.username }}</td>
+                            <td class="text-center">{{ chemical.user.first_name }}</td>
+                            <td class="text-center">{{ chemical.user.last_name }}</td>
+                            <td class="text-center">{{ chemical.user.email }}</td>
+                            <td class="text-center">{{ chemical.department }}</td>
+                            <td>
+                                <a href="/admin/teacher/details/{{ chemical.id }}" class="btn btn-primary btn-block">
+                                    Edit <i class="fas fa-edit"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/admin/teacher/delete/{{ chemical.id }}" class="btn btn-danger btn-block">
+                                    Delete <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                 <!-- Pagination -->
+                 <div class="alert alert-light page">
+                    <span class="step-links">
+                        {% if t_chemicals.has_previous %}
+                        <a href="?page1={{page1}}&page2=1&page3={{page3}}&page4={{page4}}&page5={{page5}}&page6={{page6}}">&laquo; first</a>
+                        <a href="?page1={{page1}}&page2={{ t_chemicals.previous_page_number }}&page3={{page3}}&page4={{page4}}&page5={{page5}}&page6={{page6}}">previous</a>
+                        {% endif %}
+                        <span class="current">
+                            Page {{ t_chemicals.number }} of {{ t_chemicals.paginator.num_pages }}
+                        </span>
+                        {% if t_chemicals.has_next %}
+                        <a href="?page1={{page1}}&page2={{ t_chemicals.next_page_number }}&page3={{page3}}&page4={{page4}}&page5={{page5}}&page6={{page6}}">next</a>
+                        <a href="?page1={{page1}}&page2={{ t_chemicals.paginator.num_pages }}&page3={{page3}}&page4={{page4}}&page5={{page5}}&page6={{page6}}">last &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
+                {% else %}
+                <!-- Displaying Error for no teacher entry in department -->
+                <div class="row top100">
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-6">
+                        <div class="card error">
+                            <h1 class="text-center">No Data Found of Chemical Department</h1>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            <!-- Civil -->
+            <div id="t_civil" class="tab-pane">
+                {% if t_civils %}
+                <div class="input-group mt-5">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text search">
+                            <i class="fas fa-search"></i>
+                        </span>
+                    </div>
+                    <input class="form-control"
+                        onkeyup="Search('t_cvInput', 't_cvBody', 't_cvTable', 't_cvError')" type="text"
+                        placeholder="Search by First Name or Last Name" aria-label="Search" title="Search"
+                        name="searchQuery" id="t_cvInput">
+                </div>
+                <!-- Displaying Error for Search -->
+                <div class="card error mt-5 mb-5" style="display: none;" id="t_cvError">
+                    <h1 class="text-center">No Such Data Found...</h1>
+                </div>
+                <table class="table table-striped table-bordered mt-4" id="t_cvTable">
+                    <thead class="table table-primary">
+                        <tr>
+                            <th class="text-center">Username</th>
+                            <th class="text-center">First Name</th>
+                            <th class="text-center">Last Name</th>
+                            <th class="text-center">Email</th>
+                            <th class="text-center">Department</th>
+                            <th class="text-center">Edit</th>
+                            <th class="text-center">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody id="t_cvBody">
+                        {% for civil in t_civils %}
+                        <tr>
+                            <td class="text-center">{{ civil.user.username }}</td>
+                            <td class="text-center">{{ civil.user.first_name }}</td>
+                            <td class="text-center">{{ civil.user.last_name }}</td>
+                            <td class="text-center">{{ civil.user.email }}</td>
+                            <td class="text-center">{{ civil.department }}</td>
+                            <td>
+                                <a href="/admin/teacher/details/{{ civil.id }}" class="btn btn-primary btn-block">
+                                    Edit <i class="fas fa-edit"></i>
+                                    </a>
+                                </td>
+                            <td>
+                                <a href="/admin/teacher/delete/{{ civil.id }}" class="btn btn-danger btn-block">
+                                    Delete <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <!-- Pagination -->
+                <div class="alert alert-light page">
+                    <span class="step-links">
+                        {% if t_civils.has_previous %}
+                        <a href="?page1={{page1}}&page2={{page2}}&page3=1&page4={{page4}}&page5={{page5}}&page6={{page6}}">&laquo; first</a>
+                        <a href="?page1={{page1}}&page2={{page2}}&page3={{ t_civils.previous_page_number }}&page4={{page4}}&page5={{page5}}&page6={{page6}}">previous</a>
+                        {% endif %}
+                        <span class="current">
+                            Page {{ t_civils.number }} of {{ t_civils.paginator.num_pages }}
+                        </span>
+                        {% if t_civils.has_next %}
+                        <a href="?page1={{page1}}&page2={{page2}}&page3={{ t_civils.next_page_number }}&page4={{page4}}&page5={{page5}}&page6={{page6}}">next</a>
+                        <a href="?page1={{page1}}&page2={{page2}}&page3={{ t_civils.paginator.num_pages }}&page4={{page4}}&page5={{page5}}&page6={{page6}}">last &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
+                {% else %}
+                <!-- Displaying Error for no teacher entry in department -->
+                <div class="row top100">
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-6">
+                        <div class="card error">
+                            <h1 class="text-center">No Data Found of Civil Department</h1>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            <!-- Computer -->
+            <div id="t_computer" class="tab-pane">
+                {% if t_computers %}
+                <div class="input-group mt-5">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text search">
+                            <i class="fas fa-search"></i>
+                        </span>
+                    </div>
+                    <input class="form-control"
+                        onkeyup="Search('t_cmInput', 't_cmBody', 't_cmTable', 't_cmError')" type="text"
+                        placeholder="Search by First Name or Last Name" aria-label="Search" title="Search"
+                        name="searchQuery" id="t_cmInput">
+                </div>
+                <!-- Displaying Error for Search -->
+                <div class="card error mt-5 mb-5" style="display: none;" id="t_cmError">
+                    <h1 class="text-center">No Such Data Found...</h1>
+                </div>
+                <table class="table table-striped table-bordered mt-4" id="t_cmTable">
+                    <thead class="table table-primary">
+                        <tr>
+                            <th class="text-center">Username</th>
+                            <th class="text-center">First Name</th>
+                            <th class="text-center">Last Name</th>
+                            <th class="text-center">Email</th>
+                            <th class="text-center">Department</th>
+                            <th class="text-center">Edit</th>
+                            <th class="text-center">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody id="t_cmBody">
+                        {% for computer in t_computers %}
+                        <tr>
+                            <td class="text-center">{{ computer.user.username }}</td>
+                            <td class="text-center">{{ computer.user.first_name }}</td>
+                            <td class="text-center">{{ computer.user.last_name }}</td>
+                            <td class="text-center">{{ computer.user.email }}</td>
+                            <td class="text-center">{{ computer.department }}</td>
+                            <td>
+                                <a href="/admin/teacher/details/{{ computer.id }}" class="btn btn-primary btn-block">
+                                    Edit <i class="fas fa-edit"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/admin/teacher/delete/{{ computer.id }}" class="btn btn-danger btn-block">
+                                    Delete <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <!-- Pagination -->
+                <div class="alert alert-light page">
+                    <span class="step-links">
+                        {% if t_computers.has_previous %}
+                        <a href="?page1={{page1}}&page2={{page2}}&page3={{page3}}&page4=1&page5={{page5}}&page6={{page6}}">&laquo; first</a>
+                        <a href="?page1={{page1}}&page2={{page2}}&page3={{page3}}&page4={{ t_computers.previous_page_number }}&page5={{page5}}&page6={{page6}}">previous</a>
+                        {% endif %}
+                        <span class="current">
+                            Page {{ t_computers.number }} of {{ t_computers.paginator.num_pages }}
+                        </span>
+                        {% if t_computers.has_next %}
+                        <a href="?page1={{page1}}&page2={{page2}}&page3={{page3}}&page4={{ t_computers.next_page_number }}&page5={{page5}}&page6={{page6}}">next</a>
+                        <a href="?page1={{page1}}&page2={{page2}}&page3={{page3}}&page4={{ t_computers.paginator.num_pages }}&page5={{page5}}&page6={{page6}}">last &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
+                {% else %}
+                <!-- Displaying Error for no teacher entry in department -->
+                <div class="row top100">
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-6">
+                        <div class="card error">
+                            <h1 class="text-center">No Data Found of Computer Department</h1>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            <!-- ExTC -->
+            <div id="t_extc" class="tab-pane">
+                {% if t_extc %}
+                <div class="input-group mt-5">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text search">
+                            <i class="fas fa-search"></i>
+                        </span>
+                    </div>
+                    <input class="form-control" onkeyup="Search('t_eInput', 't_eBody', 't_eTable', 't_eError')"
+                        type="text" placeholder="Search by First Name or Last Name" aria-label="Search"
+                        title="Search" name="searchQuery" id="t_eInput">
+                </div>
+                <!-- Displaying Error for Search -->
+                <div class="card error mt-5 mb-5" style="display: none;" id="t_eError">
+                    <h1 class="text-center">No Such Data Found...</h1>
+                </div>
+                <table class="table table-striped table-bordered mt-4" id="t_eTable">
+                    <thead class="table table-primary">
+                        <tr>
+                            <th class="text-center">Username</th>
+                            <th class="text-center">First Name</th>
+                            <th class="text-center">Last Name</th>
+                            <th class="text-center">Email</th>
+                            <th class="text-center">Department</th>
+                            <th class="text-center">Edit</th>
+                            <th class="text-center">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody id="t_eBody">
+                        {% for e in t_extc %}
+                        <tr>
+                            <td class="text-center">{{ e.user.username }}</td>
+                            <td class="text-center">{{ e.user.first_name }}</td>
+                            <td class="text-center">{{ e.user.last_name }}</td>
+                            <td class="text-center">{{ e.user.email }}</td>
+                            <td class="text-center">{{ e.department }}</td>
+                            <td>
+                                <a href="/admin/teacher/details/{{ e.id }}" class="btn btn-primary btn-block">
+                                    Edit <i class="fas fa-edit"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/admin/teacher/delete/{{ e.id }}" class="btn btn-danger btn-block">
+                                    Delete <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <!-- Pagination -->
+                <div class="alert alert-light page">
+                    <span class="step-links">
+                        {% if t_extc.has_previous %}
+                        <a href="?page1={{page1}}&page2={{page2}}&page3={{page3}}&page4={{page4}}&page5=1&page6={{page6}}">&laquo; first</a>
+                        <a href="?page1={{page1}}&page2={{page2}}&page3={{page3}}&page4={{page4}}&page5={{ t_extc.previous_page_number }}&page6={{page6}}">previous</a>
+                        {% endif %}
+                        <span class="current">
+                            Page {{ t_extc.number }} of {{ t_extc.paginator.num_pages }}
+                        </span>
+                        {% if t_extc.has_next %}
+                        <a href="?page1={{page1}}&page2={{page2}}&page3={{page3}}&page4={{page4}}&page5={{ t_extc.next_page_number }}&page6={{page6}}">next</a>
+                        <a href="?page1={{page1}}&page2={{page2}}&page3={{page3}}&page4={{page4}}&page5={{ t_extc.paginator.num_pages }}&page6={{page6}}">last &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
+                {% else %}
+                <!-- Displaying Error for no teacher entry in department -->
+                <div class="row top100">
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-6">
+                        <div class="card error">
+                            <h1 class="text-center">No Data Found of ExTC Department</h1>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            <!-- Mechanical -->
+            <div id="t_mechanical" class="tab-pane">
+                {% if t_mechanicals %}
+                <div class="input-group mt-5">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text search">
+                            <i class="fas fa-search"></i>
+                        </span>
+                    </div>
+                    <input class="form-control" onkeyup="Search('t_mInput', 't_mBody', 't_mTable', 't_mError')"
+                        type="text" placeholder="Search by First Name or Last Name" aria-label="Search"
+                        title="Search" name="searchQuery" id="t_mInput">
+                </div>
+                <!-- Displaying Error for Search -->
+                <div class="card error mt-5 mb-5" style="display: none;" id="t_mError">
+                    <h1 class="text-center">
+                        No Such Data Found...
+                    </h1>
+                </div>
+                <table class="table table-striped table-bordered mt-4" id="t_mTable">
+                    <thead class="table table-primary">
+                        <tr>
+                            <th class="text-center">Username</th>
+                            <th class="text-center">First Name</th>
+                            <th class="text-center">Last Name</th>
+                            <th class="text-center">Email</th>
+                            <th class="text-center">Department</th>
+                            <th class="text-center">Edit</th>
+                            <th class="text-center">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody id="t_mBody">
+                        {% for mechanical in t_mechanicals %}
+                        <tr>
+                            <td class="text-center">{{ mechanical.user.username }}</td>
+                            <td class="text-center">{{ mechanical.user.first_name }}</td>
+                            <td class="text-center">{{ mechanical.user.last_name }}</td>
+                            <td class="text-center">{{ mechanical.user.email }}</td>
+                            <td class="text-center">{{ mechanical.department }}</td>
+                            <td>
+                                <a href="/admin/teacher/details/{{ mechanical.id }}" class="btn btn-primary btn-block">
+                                    Edit <i class="fas fa-edit"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/admin/teacher/delete/{{ mechanical.id }}" class="btn btn-danger btn-block">
+                                    Delete <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <!-- Pagination -->
+                <div class="alert alert-light page">
+                    <span class="step-links">
+                        {% if t_mechanicals.has_previous %}
+                        <a href="?page1={{page1}}&page2={{page2}}&page3={{page3}}&page4={{page4}}&page5={{page5}}&page6=1">&laquo; first</a>
+                        <a href="?page1={{page1}}&page2={{page2}}&page3={{page3}}&page4={{page4}}&page5={{page5}}&page6={{ t_mechanicals.previous_page_number }}">previous</a>
+                        {% endif %}
+                        <span class="current">
+                            Page {{ t_mechanicals.number }} of {{ t_mechanicals.paginator.num_pages }}
+                        </span>
+                        {% if t_mechanicals.has_next %}
+                        <a href="?page1={{page1}}&page2={{page2}}&page3={{page3}}&page4={{page4}}&page5={{page5}}&page6={{ t_mechanicals.next_page_number }}">next</a>
+                        <a href="?page1={{page1}}&page2={{page2}}&page3={{page3}}&page4={{page4}}&page5={{page5}}&page6={{ t_mechanicals.paginator.num_pages }}">last &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
+                {% else %}
+                <!-- Displaying Error for no teacher entry in department -->
+                <div class="row top100">
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-6">
+                        <div class="card error">
+                            <h1 class="text-center">
+                                No Data Found of Mechanical Department
+                            </h1>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Persistant Tabs -->
+<script>
+    $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
+        localStorage.setItem('activeTab', $(e.target).attr('href'));
+    });
+
+    var activeTab = localStorage.getItem('activeTab');
+    if (activeTab) {
+        $('.nav-justified a[href="' + activeTab + '"]').tab('show');
+    }
+</script>
+{% endblock %}

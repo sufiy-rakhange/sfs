@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- Including JavaScript Files -->
+    <script src="/static/feedback/script.js"></script>
+    <!-- Including CSS Files -->
+    <link rel="stylesheet" href="/static/feedback/styles.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
+        integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
+
+    <link rel="icon" href="/static/feedback/myimages/mylogo.ico" />
+</head>
+
+<body>
+    <!-- A horizontal navbar that becomes vertical on small screens -->
+    <nav class="navbar navbar-inverse bg-primary navbar-light fixed-top">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/admin">
+                    <img class="logo" src="/static/feedback/myimages/logo.png" />
+                </a>
+            </div>
+            <ul>
+            {% if user.is_authenticated %}
+            <!-- Right-aligned nav -->
+            <li class="nav-item dropdown">
+                <a class="nav-link text-light dropdown-toggle pb-0" href="#" id="navbarDropdown" role="button"
+                    data-toggle="dropdown" title="My Account">
+                    My Account
+                </a>
+                <div class="dropdown-menu-right dropdown-menu">
+                    {% block pass %}{% endblock %}
+                    <a href="/admin/logout" class="dropdown-item" title="Log Out">
+                        Log Out
+                        <span>
+                            <i class="fas fa-sign-out-alt"></i>
+                        </span>
+                    </a>
+                </div>
+            </li>
+            {% endif %}
+            </ul>
+    </nav>
+    <div class="row top14-6 dashboard-panel">
+        {% block index %}{% endblock %}
+    </div>
+</body>
+
+</html>

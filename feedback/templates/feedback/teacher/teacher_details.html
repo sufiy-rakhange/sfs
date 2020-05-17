@@ -1,0 +1,118 @@
+{% extends "feedback/admin/base_admin.html" %}
+
+{% block title %}Teacher Details{% endblock %}
+
+<!--Change Password -->
+{% block pass %}
+    <a href="{% url 'password_change' %}" class="dropdown-item" title="Change password">
+        Change Password <span><i class="fas fa-key"></i></span>
+    </a>
+    <div class="dropdown-divider"></div>
+{% endblock %}
+
+{% block index %}
+<div class="col-lg-12">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-8 pt-4">
+                <form action="{% url 'teacher_edit' %}" method="POST" class="detail-form details">
+                    {% csrf_token %}
+                    <input type="hidden" value="{{ teacher.id }}" name="id">
+                    <div class="form-group form-row">
+                        <label for="username">Username:</label>
+                        <input type="text" name="username" id="username" value="{{ teacher.user.username }}">
+                    </div>
+                    <div class="form-group form-row">
+                        <label for="first_name">First Name:</label>
+                        <input type="text" name="first_name" id="first_name" value="{{ teacher.user.first_name }}">
+                    </div>
+                    <div class="form-group form-row">
+                    <label for="last_name">Last Name:</label>
+                    <input type="text" name="last_name" id="last_name" value="{{ teacher.user.last_name }}">
+                    </div>
+                    <div class="form-group form-row">
+                    <label for="email">Email Address:</label>
+                    <input type="email" name="email" id="email" value="{{ teacher.user.email }}">
+                    </div>
+                    <div class="form-group">
+                    <label for="department">Department:</label>
+                    <select class="form-control" name="department" id="department">
+                        {% if teacher.department.department_name == "First Year" %}
+                            <option selected value="{{ teacher.department }}">
+                                {{ teacher.department }}
+                            </option>
+                            <option value="Computer Engineering">Computer Engineering</option>
+                            <option value="Mechanical Engineering">Mechanical Engineering</option>
+                            <option value="Civil Engineering">Civil Engineering</option>
+                            <option value="Chemical Engineering">Chemical Engineering</option>
+                            <option value="ExTC Engineering">ExTC Engineering</option>
+                        {% elif teacher.department.department_name == "Computer Engineering" %}
+                            <option value="First Year">First Year</option>
+                            <option selected value="{{ teacher.department }}">
+                                {{ teacher.department }}
+                            </option>
+                            <option value="Mechanical Engineering">Mechanical Engineering</option>
+                            <option value="Civil Engineering">Civil Engineering</option>
+                            <option value="Chemical Engineering">Chemical Engineering</option>
+                            <option value="ExTC Engineering">ExTC Engineering</option>
+                        {% elif teacher.department.department_name == "Mechanical Engineering" %}
+                            <option value="First Year">First Year</option>
+                            <option value="Computer Engineering">Computer Engineering</option>
+                            <option selected value="{{ teacher.department }}">
+                                {{ teacher.department }}
+                            </option>
+                            <option value="Civil Engineering">Civil Engineering</option>
+                            <option value="Chemical Engineering">Chemical Engineering</option>
+                            <option value="ExTC Engineering">ExTC Engineering</option>
+                        {% elif teacher.department.department_name == "Civil Engineering" %}
+                            <option value="First Year">First Year</option>
+                            <option value="Computer Engineering">Computer Engineering</option>
+                            <option value="Mechanical Engineering">Mechanical Engineering</option>
+                            <option selected value="{{ teacher.department }}">
+                                {{ teacher.department }}
+                            </option>
+                            <option value="Chemical Engineering">Chemical Engineering</option>
+                            <option value="ExTC Engineering">ExTC Engineering</option>
+                        {% elif teacher.department.department_name == "Chemical Engineering" %}
+                                <option value="First Year">First Year</option>
+                            <option value="Computer Engineering">Computer Engineering</option>
+                            <option value="Mechanical Engineering">Mechanical Engineering</option>
+                            <option value="Civil Engineering">Civil Engineering</option>
+                            <option selected value="{{ teacher.department }}">
+                                {{ teacher.department }}
+                            </option>
+                            <option value="ExTC Engineering">ExTC Engineering</option>
+                        {% else %}
+                            <option value="First Year">First Year</option>
+                            <option value="Computer Engineering">Computer Engineering</option>
+                            <option value="Mechanical Engineering">Mechanical Engineering</option>
+                            <option value="Civil Engineering">Civil Engineering</option>
+                            <option value="Chemical Engineering">Chemical Engineering</option>
+                            <option selected value="{{ teacher.department }}">
+                                {{ teacher.department }}
+                            </option>
+                        {% endif %}
+                    </select>
+                    </div>
+                    <div class="row pt-2">
+                        <div class="col-lg-4"></div>
+                        <div class="col-lg-2">
+                            <button type="submit" class="btn btn-primary btn-block">
+                                Update <i class="fas fa-angle-double-up"></i>
+                            </button>
+                        </div>
+                        <div class="col-lg-1"></div>
+                        <div class="col-lg-2">
+                            <a href="/admin/teacher/list" class="btn btn-info btn-block">
+                                Go Back <i class="fas fa-reply"></i>
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
